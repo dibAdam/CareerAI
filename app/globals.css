@@ -110,3 +110,48 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #333;
 }
+
+/* Print Styles */
+@media print {
+
+  nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .glass-card {
+    background: white !important;
+    border: 1px solid #eee !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  .premium-gradient-text {
+    background: none !important;
+    -webkit-text-fill-color: black !important;
+    color: black !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .text-white\/60,
+  .text-white\/40,
+  .text-white\/20 {
+    color: #666 !important;
+  }
+
+  .bg-white\/5,
+  .bg-white\/\[0\.02\] {
+    background: #f9f9f9 !important;
+    border: 1px solid #eee !important;
+  }
+}

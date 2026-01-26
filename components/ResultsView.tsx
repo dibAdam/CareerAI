@@ -37,7 +37,10 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                     </Link>
 
                     <div className="flex items-center gap-4">
-                        <button className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tracking-widest uppercase text-white/60 hover:text-white transition-all">
+                        <button
+                            onClick={() => window.print()}
+                            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tracking-widest uppercase text-white/60 hover:text-white transition-all"
+                        >
                             <Download className="w-4 h-4" />
                             Export PDF
                         </button>
@@ -93,7 +96,10 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                                 <button className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors">
                                     <Share2 className="w-5 h-5" />
                                 </button>
-                                <button className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors md:hidden">
+                                <button
+                                    onClick={() => window.print()}
+                                    className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors md:hidden"
+                                >
                                     <Download className="w-5 h-5" />
                                 </button>
                             </motion.div>
