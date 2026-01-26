@@ -25,9 +25,9 @@ export async function extractJobText(input: JobInput): Promise<ExtractedJob> {
     let jobUrl = input.content;
     if (input.source === 'url') {
         // Try to scrape LinkedIn URL
-        if (jobUrl.includes("linkedin")) {
+        if (jobUrl.includes("linkedin") && jobUrl.includes("currentJobId")) {
             const jobID = jobUrl.split("currentJobId=")[1];
-            jobUrl = "https://www.linkedin.com/jobs/search?currentJobId=" + jobID;
+            jobUrl = "https://www.linkedin.com/jobs/view/" + jobID;
         }
         try {
             const linkedInData = await scrapeLinkedInJob(jobUrl);

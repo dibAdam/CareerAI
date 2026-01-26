@@ -46,6 +46,8 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
         });
 
         // Step 3: Perform AI analysis
+        console.log(`Analyzing CV (${cvText.length} chars) against job: ${jobData.title} at ${jobData.company}`);
+
         const analysis = await analyzeCV(
             cvText,
             jobData.description,

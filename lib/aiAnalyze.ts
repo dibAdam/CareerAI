@@ -38,7 +38,8 @@ export async function analyzeCV(
     jobTitle: string,
     company: string
 ): Promise<AnalysisResult> {
-    const prompt = buildAnalysisPrompt(cvText, jobDescription, jobTitle, company);
+    console.log(`AI Analysis started for ${jobTitle} at ${company}. CV length: ${cvText.length}, Job length: ${jobDescription.length}`);
+    const prompt = buildAnalysisPrompt(cvText.toLocaleLowerCase(), jobDescription.toLocaleLowerCase(), jobTitle.toLocaleLowerCase(), company);
 
     try {
         const response = await openrouter.chat.completions.create({
@@ -53,7 +54,7 @@ export async function analyzeCV(
                     content: prompt,
                 },
             ],
-            temperature: 0.3, // Lower temperature for more consistent analysis
+            temperature: 0.7, // Higher temperature for more varied analysis
             // Note: response_format JSON mode may not be supported by all models
             // If you get errors, remove this line and rely on prompt instructions
             response_format: { type: 'json_object' },
@@ -67,6 +68,9 @@ export async function analyzeCV(
 
         // Try to parse JSON from the response
         let result: AnalysisResult;
+
+        console.log("AI response content:", content);
+
         try {
             result = JSON.parse(content) as AnalysisResult;
         } catch (parseError) {
@@ -130,7 +134,7 @@ Focus on:
 - Concrete, actionable improvements
 - Prioritized fixes (high impact first)
 
-Be constructive, specific, and helpful. Avoid generic advice.
+Be constructive, specific, and helpful. Avoid generic advice. Every analysis MUST be unique and deeply tailored to the specific text provided. Do not use templates or repetitive phrases across different analyses.
 
 IMPORTANT: Return ONLY the JSON object, no additional text or markdown formatting.`;
 
@@ -161,7 +165,8 @@ ${cvText}
 Provide a comprehensive ATS-focused analysis comparing the CV to the job requirements.
 Identify missing keywords, structural issues, and prioritize the most impactful improvements.
 
-Return your analysis as valid JSON following the specified structure.`;
+Return your analysis as valid JSON following the specified structure.
+Request ID: ${Date.now()}`;
 }
 
 /**
