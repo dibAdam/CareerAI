@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Link2, FileText, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface JobInputProps {
     onJobInput: (text: string, source: 'url' | 'text') => void;
@@ -15,17 +17,13 @@ export default function JobInput({ onJobInput, disabled }: JobInputProps) {
         const value = e.target.value;
         setInputValue(value);
 
-        // More specific LinkedIn URL detection: check if it's likely just a URL
+        // More specific LinkedIn URL detection
         const isUrlPattern = /^(https?:\/\/)?(www\.)?linkedin\.com\/jobs\/view\/\d+/i;
         const isLinkedInUrl = isUrlPattern.test(value.trim());
 
-        if (isLinkedInUrl) {
-            setSource('url');
-        } else {
-            setSource('text');
-        }
-
-        onJobInput(value, isLinkedInUrl ? 'url' : 'text');
+        const newSource = isLinkedInUrl ? 'url' : 'text';
+        setSource(newSource);
+        onJobInput(value, newSource);
     };
 
     const toggleSource = () => {
@@ -35,72 +33,62 @@ export default function JobInput({ onJobInput, disabled }: JobInputProps) {
     };
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-6">
             {/* Mode Indicator & Toggle */}
             {inputValue.trim() && (
                 <div className="flex items-center justify-between px-1">
-                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md border ${source === 'url'
-                            ? 'bg-green-50 border-green-200 text-green-800'
-                            : 'bg-blue-50 border-blue-200 text-blue-800'
-                        }`}>
+                    <div className={cn(
+                        "inline-flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-500",
+                        source === 'url'
+                            ? 'bg-blue-500/10 border-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.1)]'
+                            : 'bg-purple-500/10 border-purple-500/20 text-purple-400 shadow-[0_0_15px_rgba(139,92,246,0.1)]'
+                    )}>
                         {source === 'url' ? (
                             <>
-                                <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                </svg>
-                                <span className="text-xs font-medium">LinkedIn URL detected</span>
+                                <Link2 className="w-4 h-4" />
+                                <span className="text-xs font-bold tracking-widest uppercase">LinkedIn URL Detected</span>
                             </>
                         ) : (
                             <>
-                                <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
-                                </svg>
-                                <span className="text-xs font-medium">Text mode enabled</span>
+                                <FileText className="w-4 h-4" />
+                                <span className="text-xs font-bold tracking-widest uppercase">Manual Text Mode</span>
                             </>
                         )}
                     </div>
 
                     <button
                         onClick={toggleSource}
-                        className="text-xs font-medium text-gray-500 hover:text-gray-900 underline underline-offset-2"
+                        className="text-[10px] font-black tracking-[0.2em] uppercase text-white/20 hover:text-white transition-colors underline underline-offset-4"
                     >
-                        Switch to {source === 'url' ? 'manual text' : 'URL extraction'}
+                        Switch to {source === 'url' ? 'Manual Text' : 'URL Extraction'}
                     </button>
                 </div>
             )}
 
             {/* Input Area */}
-            <textarea
-                value={inputValue}
-                onChange={handleInputChange}
-                disabled={disabled}
-                placeholder="Paste a LinkedIn job URL or the complete job description...
-
-LinkedIn URL Example:
-https://www.linkedin.com/jobs/view/1234567890
-
-Or paste job description:
-Senior Software Engineer at TechCorp
-
-We are seeking an experienced software engineer...
-
-Requirements:
-• 5+ years of experience
-• Python, React, AWS
-• Strong problem-solving skills..."
-                rows={14}
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent resize-none text-sm ${disabled ? 'bg-gray-50 cursor-not-allowed' : 'bg-white'
-                    }`}
-            />
+            <div className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-white/5 to-white/10 rounded-2xl opacity-0 group-focus-within:opacity-100 transition duration-500 blur-sm" />
+                <textarea
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    disabled={disabled}
+                    placeholder="Paste a LinkedIn job URL or the complete job description..."
+                    rows={12}
+                    className={cn(
+                        "relative w-full px-6 py-6 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-0 focus:border-white/20 resize-none text-base font-medium placeholder:text-white/20 transition-all",
+                        disabled && "opacity-50 cursor-not-allowed"
+                    )}
+                />
+            </div>
 
             {/* Info Box */}
-            <div className="p-3 rounded-lg bg-blue-50 border border-blue-200">
-                <div className="flex items-start gap-2">
-                    <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                    <p className="text-xs text-blue-800 leading-relaxed">
-                        <strong>Tip:</strong> Paste a LinkedIn job URL and we'll automatically extract all details, or paste the full job description text.
+            <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <AlertCircle className="w-4 h-4 text-white/40" />
+                    </div>
+                    <p className="text-xs text-white/40 leading-relaxed font-medium">
+                        <strong className="text-white/60">Pro Tip:</strong> For the most accurate analysis, ensure the full job description is included, including requirements and responsibilities.
                     </p>
                 </div>
             </div>
