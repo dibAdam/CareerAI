@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 ATS CV Optimizer
 
 An AI-powered tool that analyzes your CV against job descriptions and provides actionable feedback to help you pass Applicant Tracking Systems (ATS).
@@ -325,3 +326,6 @@ MIT License - feel free to use this project for personal or commercial purposes
 **Built with ❤️ for job seekers everywhere**
 
 Made by [Your Name]
+=======
+# CareerAI
+>>>>>>> 84126b6463bbdbccf49f337e7d6fd595a58c6f25
