@@ -22,10 +22,10 @@ export default function ReportCard({ title, items, variant = 'default' }: Report
             case 'warning':
                 return {
                     icon: AlertTriangle,
-                    color: 'text-amber-400',
-                    bg: 'bg-amber-400/10',
-                    border: 'border-amber-400/20',
-                    glow: 'shadow-[0_0_20px_rgba(251,191,36,0.1)]'
+                    color: 'text-red-400',
+                    bg: 'bg-red-400/10',
+                    border: 'border-red-400/20',
+                    glow: 'shadow-[0_0_20px_rgba(248,113,113,0.1)]'
                 };
             case 'success':
                 return {
@@ -33,23 +33,23 @@ export default function ReportCard({ title, items, variant = 'default' }: Report
                     color: 'text-emerald-400',
                     bg: 'bg-emerald-400/10',
                     border: 'border-emerald-400/20',
-                    glow: 'shadow-[0_0_20px_rgba(52,211,153,0.1)]'
+                    glow: 'shadow-[0_0_20px_rgba(16,185,129,0.1)]'
                 };
             case 'info':
                 return {
                     icon: Info,
-                    color: 'text-blue-400',
-                    bg: 'bg-blue-400/10',
-                    border: 'border-blue-400/20',
-                    glow: 'shadow-[0_0_20px_rgba(96,165,250,0.1)]'
+                    color: 'text-cyan-400',
+                    bg: 'bg-cyan-400/10',
+                    border: 'border-cyan-400/20',
+                    glow: 'shadow-[0_0_20px_rgba(6,182,212,0.1)]'
                 };
             default:
                 return {
                     icon: Zap,
-                    color: 'text-purple-400',
-                    bg: 'bg-purple-400/10',
-                    border: 'border-purple-400/20',
-                    glow: 'shadow-[0_0_20px_rgba(167,139,250,0.1)]'
+                    color: 'text-amethyst-400',
+                    bg: 'bg-amethyst-400/10',
+                    border: 'border-amethyst-400/20',
+                    glow: 'shadow-[0_0_20px_rgba(168,85,247,0.1)]'
                 };
         }
     };
@@ -62,7 +62,7 @@ export default function ReportCard({ title, items, variant = 'default' }: Report
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-                "glass-card p-8 relative overflow-hidden group transition-all duration-500",
+                "glass-card p-8 relative overflow-hidden group transition-all duration-500 bg-surface/50",
                 config.glow
             )}
         >
@@ -71,7 +71,7 @@ export default function ReportCard({ title, items, variant = 'default' }: Report
                     <Icon className={cn("w-6 h-6", config.color)} />
                 </div>
                 <div>
-                    <h3 className="text-2xl font-bold tracking-tight">{title}</h3>
+                    <h3 className="text-2xl font-bold tracking-tight font-heading">{title}</h3>
                     <div className="flex items-center gap-2">
                         <div className={cn("w-1.5 h-1.5 rounded-full", config.color.replace('text-', 'bg-'))} />
                         <span className="text-[10px] font-black tracking-[0.2em] uppercase text-white/20">

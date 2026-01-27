@@ -4,9 +4,6 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import {
     Layers,
-    AlertCircle,
-    Clock,
-    CheckCircle2,
     ChevronDown
 } from 'lucide-react';
 import { useState } from 'react';
@@ -34,16 +31,16 @@ export default function SectionFeedback({ sections }: SectionFeedbackProps) {
             case 'medium':
                 return {
                     label: 'Important',
-                    color: 'text-yellow-400',
-                    bg: 'bg-yellow-400/10',
-                    border: 'border-yellow-400/20'
+                    color: 'text-amethyst-400',
+                    bg: 'bg-amethyst-400/10',
+                    border: 'border-amethyst-400/20'
                 };
             case 'low':
                 return {
                     label: 'Optimization',
-                    color: 'text-blue-400',
-                    bg: 'bg-blue-400/10',
-                    border: 'border-blue-400/20'
+                    color: 'text-emerald-400',
+                    bg: 'bg-emerald-400/10',
+                    border: 'border-emerald-400/20'
                 };
             default:
                 return {
@@ -65,7 +62,7 @@ export default function SectionFeedback({ sections }: SectionFeedbackProps) {
                 <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
                     <Layers className="w-5 h-5 text-white/40" />
                 </div>
-                <h2 className="text-3xl font-black tracking-tighter">Section <span className="premium-gradient-text">Intelligence</span></h2>
+                <h2 className="text-3xl font-black tracking-tighter font-heading">Section <span className="emerald-gradient-text">Intelligence</span></h2>
             </div>
 
             <div className="grid gap-4">
@@ -80,7 +77,7 @@ export default function SectionFeedback({ sections }: SectionFeedbackProps) {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             className={cn(
-                                "glass-card overflow-hidden transition-all duration-500",
+                                "glass-card overflow-hidden transition-all duration-500 bg-surface/30",
                                 isExpanded ? "border-white/20 bg-white/[0.05]" : "border-white/5 bg-white/[0.02] hover:border-white/10"
                             )}
                         >
@@ -92,11 +89,11 @@ export default function SectionFeedback({ sections }: SectionFeedbackProps) {
                                     <div className={cn(
                                         "w-2 h-2 rounded-full",
                                         item.priority === 'high' ? "bg-red-400 shadow-[0_0_10px_rgba(248,113,113,0.5)]" :
-                                            item.priority === 'medium' ? "bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]" :
-                                                "bg-blue-400 shadow-[0_0_10px_rgba(96,165,250,0.5)]"
+                                            item.priority === 'medium' ? "bg-amethyst-400 shadow-[0_0_10px_rgba(168,85,247,0.5)]" :
+                                                "bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                                     )} />
                                     <div>
-                                        <h3 className="text-lg font-bold tracking-tight">
+                                        <h3 className="text-lg font-bold tracking-tight font-heading">
                                             {getSectionTitle(item.section)}
                                         </h3>
                                         <span className={cn("text-[10px] font-black tracking-widest uppercase", config.color)}>

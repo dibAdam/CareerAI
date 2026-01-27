@@ -11,7 +11,9 @@ import {
     Briefcase,
     Building2,
     Calendar,
-    AlertCircle
+    AlertCircle,
+    FileText,
+    ShieldCheck
 } from 'lucide-react';
 import MatchScore from '@/components/MatchScore';
 import SectionFeedback from '@/components/SectionFeedback';
@@ -25,28 +27,28 @@ interface ResultsViewProps {
 
 export default function ResultsView({ analysis, sectionFeedback }: ResultsViewProps) {
     return (
-        <div className="min-h-screen bg-[#050505] text-white selection:bg-white/20">
+        <div className="min-h-screen bg-[#0A0A0B] text-white selection:bg-emerald-500/30 font-sans">
             {/* Header */}
-            <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#050505]/50 backdrop-blur-xl">
+            <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0A0A0B]/50 backdrop-blur-xl">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/landing" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
-                            <Sparkles className="w-6 h-6 text-black" />
+                    <Link href="/" className="flex items-center gap-3 group">
+                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-emerald-500/20">
+                            <Sparkles className="w-6 h-6 text-white" />
                         </div>
-                        <span className="text-xl font-bold tracking-tight">CareerAI</span>
+                        <span className="text-xl font-bold tracking-tight font-heading">Career AI</span>
                     </Link>
 
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => window.print()}
-                            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tracking-widest uppercase text-white/60 hover:text-white transition-all"
+                            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tracking-widest uppercase text-white/40 hover:text-white transition-all"
                         >
                             <Download className="w-4 h-4" />
                             Export PDF
                         </button>
                         <Link
                             href="/analyze"
-                            className="flex items-center gap-2 px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
                         >
                             <Plus className="w-4 h-4" />
                             New Analysis
@@ -56,7 +58,7 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
             </nav>
 
             <main className="pt-32 pb-20 px-6">
-                <div className="max-w-[85%] mx-auto">
+                <div className="max-w-7xl mx-auto">
                     {/* Hero Header */}
                     <div className="mb-12">
                         <motion.div
@@ -73,16 +75,16 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                             >
-                                <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter">
-                                    Analysis <span className="premium-gradient-text">Report</span>
+                                <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter font-heading">
+                                    Analysis <span className="emerald-gradient-text">Report</span>
                                 </h1>
                                 <div className="flex flex-wrap items-center gap-6">
                                     <div className="flex items-center gap-2 text-white/60 font-medium">
-                                        <Briefcase className="w-4 h-4 text-blue-400" />
+                                        <Briefcase className="w-4 h-4 text-emerald-400" />
                                         {analysis.job_title}
                                     </div>
                                     <div className="flex items-center gap-2 text-white/60 font-medium">
-                                        <Building2 className="w-4 h-4 text-purple-400" />
+                                        <Building2 className="w-4 h-4 text-amethyst-400" />
                                         {analysis.company}
                                     </div>
                                 </div>
@@ -117,9 +119,9 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.2 }}
-                                    className="glass-card p-10"
+                                    className="glass-card p-10 bg-surface/50"
                                 >
-                                    <h2 className="text-2xl font-bold mb-6 tracking-tight">Executive Summary</h2>
+                                    <h2 className="text-2xl font-bold mb-6 tracking-tight font-heading">Executive Summary</h2>
                                     <p className="text-white/60 leading-relaxed font-medium text-lg">
                                         {analysis.summary}
                                     </p>

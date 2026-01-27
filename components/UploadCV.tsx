@@ -4,7 +4,6 @@ import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import {
     Upload,
-    FileText,
     X,
     CheckCircle2,
     AlertCircle,
@@ -114,15 +113,15 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
 
                     <div className={cn(
                         "relative flex flex-col items-center justify-center py-16 px-6 rounded-2xl border-2 border-dashed transition-all duration-500",
-                        isDragging ? "border-white bg-white/10" : "border-white/10 bg-white/[0.02] group-hover:border-white/20 group-hover:bg-white/[0.04]",
-                        file && "border-green-500/20 bg-green-500/5"
+                        isDragging ? "border-emerald-500 bg-emerald-500/10" : "border-white/10 bg-white/[0.02] group-hover:border-emerald-500/30 group-hover:bg-emerald-500/5",
+                        file && "border-emerald-500/20 bg-emerald-500/5"
                     )}>
                         {file ? (
                             <div className="flex flex-col items-center text-center">
-                                <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mb-4">
-                                    <CheckCircle2 className="w-8 h-8 text-green-400" />
+                                <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
+                                    <CheckCircle2 className="w-8 h-8 text-emerald-400" />
                                 </div>
-                                <h3 className="text-lg font-bold mb-1">{file.name}</h3>
+                                <h3 className="text-lg font-bold mb-1 font-heading">{file.name}</h3>
                                 <p className="text-sm text-white/40 font-medium mb-6">{(file.size / 1024 / 1024).toFixed(2)} MB • Ready for analysis</p>
                                 <button
                                     onClick={(e) => { e.stopPropagation(); removeFile(); }}
@@ -135,9 +134,9 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                         ) : (
                             <>
                                 <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                                    <Upload className="w-8 h-8 text-white/40 group-hover:text-white transition-colors" />
+                                    <Upload className="w-8 h-8 text-white/40 group-hover:text-emerald-400 transition-colors" />
                                 </div>
-                                <h3 className="text-xl font-bold mb-2">Drop your CV here</h3>
+                                <h3 className="text-xl font-bold mb-2 font-heading">Drop your CV here</h3>
                                 <p className="text-sm text-white/40 font-medium">or click to browse from your device</p>
                                 <div className="mt-8 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-widest uppercase text-white/20">
                                     PDF Format Only • Max 10MB
@@ -148,7 +147,7 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                 </div>
             ) : (
                 <div className="relative group">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-white/5 to-white/10 rounded-2xl opacity-0 group-focus-within:opacity-100 transition duration-500 blur-sm" />
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-2xl opacity-0 group-focus-within:opacity-100 transition duration-500 blur-sm" />
                     <textarea
                         value={text}
                         onChange={handleTextChange}
@@ -156,7 +155,7 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                         placeholder="Paste your CV text here..."
                         rows={12}
                         className={cn(
-                            "relative w-full px-6 py-6 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-0 focus:border-white/20 resize-none text-base font-medium placeholder:text-white/20 transition-all",
+                            "relative w-full px-6 py-6 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-0 focus:border-emerald-500/50 resize-none text-base font-medium placeholder:text-white/20 transition-all",
                             disabled && "opacity-50 cursor-not-allowed"
                         )}
                     />

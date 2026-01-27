@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Link2, FileText, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Link2, FileText, AlertCircle } from 'lucide-react';
 
 interface JobInputProps {
     onJobInput: (text: string, source: 'url' | 'text') => void;
@@ -40,8 +40,8 @@ export default function JobInput({ onJobInput, disabled }: JobInputProps) {
                     <div className={cn(
                         "inline-flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-500",
                         source === 'url'
-                            ? 'bg-blue-500/10 border-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.1)]'
-                            : 'bg-purple-500/10 border-purple-500/20 text-purple-400 shadow-[0_0_15px_rgba(139,92,246,0.1)]'
+                            ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.1)]'
+                            : 'bg-amethyst-500/10 border-amethyst-500/20 text-amethyst-400 shadow-[0_0_15px_rgba(168,85,247,0.1)]'
                     )}>
                         {source === 'url' ? (
                             <>
@@ -67,7 +67,7 @@ export default function JobInput({ onJobInput, disabled }: JobInputProps) {
 
             {/* Input Area */}
             <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-white/5 to-white/10 rounded-2xl opacity-0 group-focus-within:opacity-100 transition duration-500 blur-sm" />
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500/20 to-amethyst-500/20 rounded-2xl opacity-0 group-focus-within:opacity-100 transition duration-500 blur-sm" />
                 <textarea
                     value={inputValue}
                     onChange={handleInputChange}
@@ -75,7 +75,7 @@ export default function JobInput({ onJobInput, disabled }: JobInputProps) {
                     placeholder="Paste a LinkedIn job URL or the complete job description..."
                     rows={12}
                     className={cn(
-                        "relative w-full px-6 py-6 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-0 focus:border-white/20 resize-none text-base font-medium placeholder:text-white/20 transition-all",
+                        "relative w-full px-6 py-6 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-0 focus:border-emerald-500/50 resize-none text-base font-medium placeholder:text-white/20 transition-all",
                         disabled && "opacity-50 cursor-not-allowed"
                     )}
                 />

@@ -1,14 +1,21 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Outfit } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+    subsets: ['latin'],
+    variable: '--font-inter',
+});
+
+const outfit = Outfit({
+    subsets: ['latin'],
+    variable: '--font-outfit',
+});
 
 export const metadata: Metadata = {
-    title: 'ATS CV Optimizer - Improve Your Resume for Job Applications',
-    description:
-        'Analyze and optimize your CV for Applicant Tracking Systems. Get AI-powered feedback on how to improve your resume for better job application success.',
-    keywords: ['ATS', 'CV', 'Resume', 'Optimizer', 'Job Application', 'Career'],
+    title: 'Career AI | The Science of the Perfect Match',
+    description: 'Stop guessing. Start interviewing. Career AI bridges the gap between your CV and the job description using precision AI analysis.',
+    keywords: ['AI', 'Career', 'CV', 'Resume', 'ATS', 'Job Search', 'Optimization'],
 };
 
 export default function RootLayout({
@@ -17,8 +24,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={inter.className}>{children}</body>
+        <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
+            <body className="bg-[#0A0A0B] text-white antialiased font-sans">
+                {children}
+            </body>
         </html>
     );
 }

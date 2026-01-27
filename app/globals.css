@@ -1,24 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #050505;
-  --foreground: #ffffff;
-  --accent: #3b82f6;
-  --accent-secondary: #8b5cf6;
+  --background: #0A0A0B;
+  --foreground: #FFFFFF;
+  --surface: #121214;
+
+  /* Brand Colors */
+  --accent-emerald: #10B981;
+  --accent-cyan: #06B6D4;
+  --accent-amethyst: #A855F7;
+  --accent-blue: #6366F1;
+  --accent-slate: #475569;
+
   --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --card-bg: #0a0a0a;
-  --luxury-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  --luxury-shadow-hover: 0 0 30px rgba(255, 255, 255, 0.2);
+  --card-bg: #121214;
+
+  --luxury-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+  --luxury-shadow-hover: 0 0 30px rgba(99, 102, 241, 0.25);
+
+  --emerald-glow: 0 0 20px rgba(16, 185, 129, 0.2);
+  --amethyst-glow: 0 0 20px rgba(168, 85, 247, 0.2);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   overflow-x: hidden;
 }
 
@@ -30,11 +43,15 @@ body {
   h4,
   h5,
   h6 {
-    @apply tracking-tight;
+    @apply tracking-tight font-heading;
   }
 }
 
 @layer components {
+  .font-heading {
+    font-family: var(--font-outfit), sans-serif;
+  }
+
   .glass-card {
     @apply bg-[var(--glass-bg)] border border-[var(--glass-border)] backdrop-blur-xl rounded-2xl;
   }
@@ -43,13 +60,22 @@ body {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white/90 to-white/70;
   }
 
+  .emerald-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)];
+  }
+
+  .amethyst-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--accent-amethyst)] to-[var(--accent-blue)];
+  }
+
   .luxury-button {
     @apply relative overflow-hidden px-8 py-4 rounded-xl font-medium transition-all duration-300 bg-white text-black hover:scale-[1.02] active:scale-[0.98];
     box-shadow: var(--luxury-shadow);
   }
 
-  .luxury-button:hover {
-    box-shadow: var(--luxury-shadow-hover);
+  .luxury-button-emerald {
+    @apply relative overflow-hidden px-8 py-4 rounded-xl font-medium transition-all duration-300 bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-white hover:scale-[1.02] active:scale-[0.98];
+    box-shadow: var(--emerald-glow);
   }
 
   .luxury-button-secondary {
@@ -68,6 +94,14 @@ body {
 
   .text-glow {
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  .emerald-glow {
+    box-shadow: var(--emerald-glow);
+  }
+
+  .amethyst-glow {
+    box-shadow: var(--amethyst-glow);
   }
 }
 

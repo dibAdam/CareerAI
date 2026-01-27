@@ -12,7 +12,8 @@ import {
     ChevronRight,
     Loader2,
     AlertCircle,
-    CheckCircle2
+    CheckCircle2,
+    ShieldCheck
 } from 'lucide-react';
 import UploadCV from '@/components/UploadCV';
 import JobInput from '@/components/JobInput';
@@ -28,6 +29,11 @@ export default function AnalyzePage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [error, setError] = useState<string>('');
     const [step, setStep] = useState(1);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleAnalyze = async () => {
         setError('');
@@ -67,20 +73,22 @@ export default function AnalyzePage() {
 
     const canAnalyze = (cvFile || cvText) && jobInput.trim().length >= 10;
 
+    if (!mounted) return null;
+
     return (
-        <div className="min-h-screen bg-[#050505] text-white selection:bg-white/20">
+        <div className="min-h-screen bg-[#0A0A0B] text-white selection:bg-emerald-500/30 font-sans">
             {/* Header */}
-            <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#050505]/50 backdrop-blur-xl">
+            <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0A0A0B]/50 backdrop-blur-xl">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/landing" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
-                            <Sparkles className="w-6 h-6 text-black" />
+                    <Link href="/" className="flex items-center gap-3 group">
+                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-emerald-500/20">
+                            <Sparkles className="w-6 h-6 text-white" />
                         </div>
-                        <span className="text-xl font-bold tracking-tight">CareerAI</span>
+                        <span className="text-xl font-bold tracking-tight font-heading">Career AI</span>
                     </Link>
 
                     <Link
-                        href="/landing"
+                        href="/"
                         className="flex items-center gap-2 text-sm font-bold tracking-widest uppercase text-white/40 hover:text-white transition-colors"
                     >
                         <ArrowLeft className="w-4 h-4" />
@@ -96,9 +104,9 @@ export default function AnalyzePage() {
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-4xl md:text-5xl font-black mb-4 tracking-tighter"
+                            className="text-4xl md:text-5xl font-black mb-4 tracking-tighter font-heading"
                         >
-                            Analysis <span className="premium-gradient-text">Configuration</span>
+                            Analysis <span className="emerald-gradient-text">Configuration</span>
                         </motion.h1>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
@@ -116,14 +124,16 @@ export default function AnalyzePage() {
                             <div key={i} className="flex items-center gap-4">
                                 <div className={cn(
                                     "w-10 h-10 rounded-full flex items-center justify-center font-black transition-all duration-500",
-                                    step >= i ? "bg-white text-black scale-110 shadow-[0_0_20px_rgba(255,255,255,0.2)]" : "bg-white/5 text-white/20 border border-white/10"
+                                    step >= i
+                                        ? "bg-gradient-to-br from-emerald-400 to-cyan-500 text-white scale-110 shadow-lg shadow-emerald-500/20"
+                                        : "bg-white/5 text-white/20 border border-white/10"
                                 )}>
                                     {i}
                                 </div>
                                 {i === 1 && (
                                     <div className={cn(
                                         "w-20 h-px transition-colors duration-500",
-                                        step > 1 ? "bg-white" : "bg-white/10"
+                                        step > 1 ? "bg-emerald-500" : "bg-white/10"
                                     )} />
                                 )}
                             </div>
@@ -138,14 +148,14 @@ export default function AnalyzePage() {
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
-                                    className="glass-card p-8 md:p-12"
+                                    className="glass-card p-8 md:p-12 bg-surface/50"
                                 >
                                     <div className="flex items-center gap-4 mb-8">
-                                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
-                                            <Briefcase className="w-6 h-6 text-blue-400" />
+                                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
+                                            <Briefcase className="w-6 h-6 text-emerald-400" />
                                         </div>
                                         <div>
-                                            <h2 className="text-2xl font-bold">Job Specification</h2>
+                                            <h2 className="text-2xl font-bold font-heading">Job Specification</h2>
                                             <p className="text-sm text-white/40 font-medium">Paste the job URL or description text.</p>
                                         </div>
                                     </div>
@@ -163,7 +173,7 @@ export default function AnalyzePage() {
                                         <button
                                             onClick={() => setStep(2)}
                                             disabled={!jobInput || jobInput.trim().length < 10}
-                                            className="luxury-button group flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="luxury-button-emerald group flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             Next Step
                                             <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -176,14 +186,14 @@ export default function AnalyzePage() {
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
-                                    className="glass-card p-8 md:p-12"
+                                    className="glass-card p-8 md:p-12 bg-surface/50"
                                 >
                                     <div className="flex items-center gap-4 mb-8">
-                                        <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center">
-                                            <FileText className="w-6 h-6 text-purple-400" />
+                                        <div className="w-12 h-12 rounded-2xl bg-amethyst-500/10 flex items-center justify-center">
+                                            <FileText className="w-6 h-6 text-amethyst-400" />
                                         </div>
                                         <div>
-                                            <h2 className="text-2xl font-bold">Your Curriculum Vitae</h2>
+                                            <h2 className="text-2xl font-bold font-heading">Your Curriculum Vitae</h2>
                                             <p className="text-sm text-white/40 font-medium">Upload your PDF or paste your CV text.</p>
                                         </div>
                                     </div>
@@ -204,7 +214,7 @@ export default function AnalyzePage() {
                                         <button
                                             onClick={handleAnalyze}
                                             disabled={!canAnalyze || isAnalyzing}
-                                            className="luxury-button group flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="luxury-button-emerald group flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             {isAnalyzing ? (
                                                 <>
@@ -254,13 +264,5 @@ export default function AnalyzePage() {
                 </div>
             </main>
         </div>
-    );
-}
-
-function ShieldCheck({ className }: { className?: string }) {
-    return (
-        <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
     );
 }

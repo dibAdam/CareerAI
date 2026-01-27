@@ -10,17 +10,10 @@ interface MatchScoreProps {
 
 export default function MatchScore({ score }: MatchScoreProps) {
     const getScoreColor = (score: number) => {
-        if (score >= 80) return 'text-green-400';
-        if (score >= 60) return 'text-yellow-400';
-        if (score >= 40) return 'text-orange-400';
+        if (score >= 80) return 'text-emerald-400';
+        if (score >= 60) return 'text-cyan-400';
+        if (score >= 40) return 'text-amethyst-400';
         return 'text-red-400';
-    };
-
-    const getScoreGlow = (score: number) => {
-        if (score >= 80) return 'shadow-[0_0_30px_rgba(74,222,128,0.2)]';
-        if (score >= 60) return 'shadow-[0_0_30px_rgba(250,204,21,0.2)]';
-        if (score >= 40) return 'shadow-[0_0_30px_rgba(251,146,60,0.2)]';
-        return 'shadow-[0_0_30px_rgba(248,113,113,0.2)]';
     };
 
     const getScoreLabel = (score: number) => {
@@ -30,19 +23,12 @@ export default function MatchScore({ score }: MatchScoreProps) {
         return 'Significant Gaps';
     };
 
-    const getProgressColor = (score: number) => {
-        if (score >= 80) return 'from-green-500 to-emerald-400';
-        if (score >= 60) return 'from-yellow-500 to-amber-400';
-        if (score >= 40) return 'from-orange-500 to-orange-400';
-        return 'from-red-500 to-rose-400';
-    };
-
     return (
-        <div className="glass-card p-10 relative overflow-hidden group">
+        <div className="glass-card p-10 relative overflow-hidden group bg-surface/50">
             {/* Background Glow */}
             <div className={cn(
                 "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 blur-[100px] opacity-20 transition-all duration-1000",
-                score >= 80 ? "bg-green-500" : score >= 60 ? "bg-yellow-500" : "bg-red-500"
+                score >= 80 ? "bg-emerald-500" : score >= 60 ? "bg-cyan-500" : score >= 40 ? "bg-amethyst-500" : "bg-red-500"
             )} />
 
             <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
@@ -71,7 +57,7 @@ export default function MatchScore({ score }: MatchScoreProps) {
                             transition={{ duration: 2, ease: "easeOut" }}
                             className={cn(
                                 "transition-all duration-1000",
-                                score >= 80 ? "text-green-400" : score >= 60 ? "text-yellow-400" : "text-red-400"
+                                score >= 80 ? "text-emerald-400" : score >= 60 ? "text-cyan-400" : score >= 40 ? "text-amethyst-400" : "text-red-400"
                             )}
                         />
                     </svg>
@@ -80,7 +66,7 @@ export default function MatchScore({ score }: MatchScoreProps) {
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.5, duration: 0.8 }}
-                            className={cn("text-6xl font-black tracking-tighter", getScoreColor(score))}
+                            className={cn("text-6xl font-black tracking-tighter font-heading", getScoreColor(score))}
                         >
                             {score}
                         </motion.span>
@@ -94,7 +80,7 @@ export default function MatchScore({ score }: MatchScoreProps) {
                         <Target className="w-3 h-3 text-white/40" />
                         <span className="text-[10px] font-black tracking-widest uppercase text-white/40">Compatibility Index</span>
                     </div>
-                    <h2 className="text-4xl font-black mb-2 tracking-tighter">
+                    <h2 className="text-4xl font-black mb-2 tracking-tighter font-heading">
                         {getScoreLabel(score)}
                     </h2>
                     <p className="text-white/40 font-medium max-w-md leading-relaxed">
@@ -110,17 +96,17 @@ export default function MatchScore({ score }: MatchScoreProps) {
                     <div className="grid grid-cols-2 gap-4 mt-8">
                         <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                             <div className="flex items-center gap-2 mb-1">
-                                <TrendingUp className="w-3 h-3 text-blue-400" />
+                                <TrendingUp className="w-3 h-3 text-emerald-400" />
                                 <span className="text-[10px] font-black tracking-widest uppercase text-white/20">Potential</span>
                             </div>
-                            <div className="text-xl font-bold">+{Math.min(100 - score, 15)}%</div>
+                            <div className="text-xl font-bold font-heading">+{Math.min(100 - score, 15)}%</div>
                         </div>
                         <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                             <div className="flex items-center gap-2 mb-1">
-                                <AlertCircle className="w-3 h-3 text-purple-400" />
+                                <AlertCircle className="w-3 h-3 text-amethyst-400" />
                                 <span className="text-[10px] font-black tracking-widest uppercase text-white/20">Risk Level</span>
                             </div>
-                            <div className="text-xl font-bold">{score >= 80 ? "Low" : score >= 60 ? "Medium" : "High"}</div>
+                            <div className="text-xl font-bold font-heading">{score >= 80 ? "Low" : score >= 60 ? "Medium" : "High"}</div>
                         </div>
                     </div>
                 </div>
