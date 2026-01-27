@@ -10,12 +10,12 @@ export default function OutputPreview() {
                         <div className="space-y-6">
                             <div className="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
                                 <p className="text-emerald-400 font-medium italic">
-                                    "Your experience in React is strong, but the job emphasizes System Design. Add your 'Scalability' project to the top of your Experience section to increase your score by 15%."
+                                    &quot;Your experience in React is strong, but the job emphasizes System Design. Add your &apos;Scalability&apos; project to the top of your Experience section to increase your score by 15%.&quot;
                                 </p>
                             </div>
                             <p className="text-xl text-white/60 leading-relaxed font-medium">
                                 Get clear, structured, and professional AI feedback that actually makes sense.
-                                No more guessing what "optimization" means.
+                                No more guessing what &quot;optimization&quot; means.
                             </p>
                         </div>
                     </div>

@@ -13,7 +13,7 @@ export default function Solution() {
                             <span className="emerald-gradient-text">Advantage.</span>
                         </h2>
                         <p className="text-xl text-white/60 mb-8 leading-relaxed font-medium">
-                            We don't just scan your CV; we strategize it. Career AI reverse-engineers
+                            We don&apos;t just scan your CV; we strategize it. Career AI reverse-engineers
                             the job offer to tell you exactly what a recruiter is looking for.
                         </p>
                         <ul className="space-y-4">

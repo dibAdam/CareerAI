@@ -16,8 +16,8 @@ export default function FinalCTA() {
                     <span className="emerald-gradient-text">Start Getting Hired.</span>
                 </h2>
                 <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
-                    Join thousands of professionals who have turned "No Response" into
-                    "When can you interview?"
+                    Join thousands of professionals who have turned &quot;No Response&quot; into
+                    &quot;When can you interview?&quot;
                 </p>
                 <div className="flex flex-col items-center gap-6">
                     <Link href="/analyze" className="luxury-button-emerald px-12 py-5 text-lg group flex items-center gap-3 animate-pulse hover:animate-none">

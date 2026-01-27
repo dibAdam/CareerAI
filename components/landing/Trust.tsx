@@ -12,7 +12,7 @@ export default function Trust() {
                         <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter font-heading">Designed by <br />Hiring Experts.</h2>
                         <p className="text-xl text-white/60 mb-12 leading-relaxed font-medium">
                             Our AI is trained on thousands of successful hiring patterns and real-world
-                            recruiter feedback. We don't use generic templates; we use logic.
+                            recruiter feedback. We don&apos;t use generic templates; we use logic.
                         </p>
                         <div className="flex flex-wrap gap-8">
                             {[

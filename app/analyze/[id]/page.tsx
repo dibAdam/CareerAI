@@ -75,7 +75,6 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
                         <ReportCard
                             title="Priority Actions"
                             items={analysis.priority_actions}
-                            icon="🎯"
                             variant="warning"
                         />
                     )}
@@ -85,7 +84,6 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
                         <ReportCard
                             title="Missing Keywords"
                             items={analysis.missing_keywords}
-                            icon="🔑"
                             variant="info"
                         />
                     )}
@@ -98,7 +96,6 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
                         <ReportCard
                             title="ATS Optimization Tips"
                             items={analysis.ats_tips}
-                            icon="💡"
                             variant="success"
                         />
                     )}

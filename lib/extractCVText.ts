@@ -1,4 +1,4 @@
-import pdf from 'pdf-parse/lib/pdf-parse';
+import pdf from 'pdf-parse';
 
 /**
  * Extracts text from a PDF CV file
