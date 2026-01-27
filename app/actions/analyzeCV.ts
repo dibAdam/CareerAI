@@ -3,7 +3,7 @@
 import { analyzeCV } from '@/lib/aiAnalyze';
 import { extractCVText } from '@/lib/extractCVText';
 import { extractJobText } from '@/lib/extractJobText';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 
 export interface AnalyzeCVInput {
     cvFile?: File;
@@ -24,6 +24,13 @@ export interface AnalyzeCVResult {
  */
 export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVResult> {
     try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+            return { success: false, error: 'You must be logged in to perform an analysis' };
+        }
+
         // Step 1: Extract CV text
         let cvText: string;
 
@@ -46,8 +53,6 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
         });
 
         // Step 3: Perform AI analysis
-        // console.log(`Analyzing CV (${cvText.length} chars) against job: ${jobData.title} at ${jobData.company}`);
-
         const analysis = await analyzeCV(
             cvText,
             jobData.description,
@@ -59,6 +64,7 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
         const { data: analysisRecord, error: analysisError } = await supabase
             .from('analyses')
             .insert({
+                user_id: user.id,
                 job_title: jobData.title,
                 company: jobData.company,
                 job_description: jobData.description,
@@ -91,7 +97,6 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
 
         if (sectionsError) {
             console.error('Sections error:', sectionsError);
-            // Don't fail the whole operation if sections fail
         }
 
         return {
@@ -109,13 +114,11 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
 
 /**
  * Determines priority level based on section and feedback content
- * Simple heuristic for V1
  */
 function determinePriority(section: string, feedback: string): 'high' | 'medium' | 'low' {
     const highPrioritySections = ['skills', 'experience'];
     const lowercaseFeedback = feedback.toLowerCase();
 
-    // High priority if critical keywords found
     if (
         lowercaseFeedback.includes('missing') ||
         lowercaseFeedback.includes('critical') ||
@@ -124,12 +127,10 @@ function determinePriority(section: string, feedback: string): 'high' | 'medium'
         return 'high';
     }
 
-    // High priority for key sections
     if (highPrioritySections.includes(section)) {
         return 'high';
     }
 
-    // Medium priority for formatting and summary
     if (section === 'formatting' || section === 'summary') {
         return 'medium';
     }
