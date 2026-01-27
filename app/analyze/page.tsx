@@ -78,7 +78,7 @@ export default function AnalyzePage() {
     return (
         <div className="min-h-screen bg-[#0A0A0B] text-white selection:bg-emerald-500/30 font-sans">
             {/* Header */}
-            <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0A0A0B]/50 backdrop-blur-xl">
+            <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0A0A0B] backdrop-blur-xl">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 group">
                         <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-emerald-500/20">
@@ -97,8 +97,8 @@ export default function AnalyzePage() {
                 </div>
             </nav>
 
-            <main className="pt-32 pb-20 px-6">
-                <div className="max-w-[80%] mx-auto">
+            <main className="pt-32 pb-20 px-4 md:px-6">
+                <div className="max-w-7xl lg:max-w-[80%] mx-auto">
                     {/* Progress Header */}
                     <div className="text-center mb-16">
                         <motion.h1

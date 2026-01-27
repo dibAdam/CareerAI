@@ -5,16 +5,16 @@ import { cn } from '@/lib/utils';
 
 export default function Problem() {
     return (
-        <section id="problem" className="py-32 relative overflow-hidden">
+        <section id="problem" className="py-20 md:py-32 relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
-                <div className="text-center mb-20">
-                    <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter font-heading">
+                <div className="text-center mb-12 md:mb-20">
+                    <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-6 tracking-tighter font-heading">
                         Why 75% of Qualified Candidates <br />
                         <span className="text-white/40">Never Get a Call.</span>
                     </h2>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                     {[
                         {
                             title: "The ATS Barrier",
@@ -35,15 +35,15 @@ export default function Problem() {
                             color: "slate"
                         }
                     ].map((item, i) => (
-                        <div key={i} className="glass-card p-10 group hover:bg-white/[0.05] transition-colors">
-                            <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                                <item.icon className={cn("w-7 h-7",
+                        <div key={i} className="glass-card p-8 md:p-10 group hover:bg-white/[0.05] transition-colors">
+                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform">
+                                <item.icon className={cn("w-6 h-6 md:w-7 md:h-7",
                                     item.color === "red" ? "text-red-400" :
                                         item.color === "orange" ? "text-orange-400" : "text-slate-400"
                                 )} />
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 font-heading">{item.title}</h3>
-                            <p className="text-white/50 leading-relaxed font-medium">
+                            <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 font-heading">{item.title}</h3>
+                            <p className="text-sm md:text-base text-white/50 leading-relaxed font-medium">
                                 {item.desc}
                             </p>
                         </div>

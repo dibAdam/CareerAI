@@ -68,11 +68,11 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
     return (
         <div className="space-y-6">
             {/* Mode Switcher */}
-            <div className="flex p-1 bg-white/[0.03] border border-white/5 rounded-xl w-fit">
+            <div className="flex p-1 bg-white/[0.03] border border-white/5 rounded-xl w-full sm:w-fit">
                 <button
                     onClick={() => setMode('file')}
                     className={cn(
-                        "flex items-center gap-2 px-6 py-2.5 rounded-lg text-xs font-bold tracking-widest uppercase transition-all",
+                        "flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 rounded-lg text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all",
                         mode === 'file' ? "bg-white text-black shadow-xl" : "text-white/40 hover:text-white"
                     )}
                 >
@@ -82,7 +82,7 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                 <button
                     onClick={() => setMode('text')}
                     className={cn(
-                        "flex items-center gap-2 px-6 py-2.5 rounded-lg text-xs font-bold tracking-widest uppercase transition-all",
+                        "flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 rounded-lg text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all",
                         mode === 'text' ? "bg-white text-black shadow-xl" : "text-white/40 hover:text-white"
                     )}
                 >
@@ -112,17 +112,17 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                     />
 
                     <div className={cn(
-                        "relative flex flex-col items-center justify-center py-16 px-6 rounded-2xl border-2 border-dashed transition-all duration-500",
+                        "relative flex flex-col items-center justify-center py-10 md:py-16 px-6 rounded-2xl border-2 border-dashed transition-all duration-500",
                         isDragging ? "border-emerald-500 bg-emerald-500/10" : "border-white/10 bg-white/[0.02] group-hover:border-emerald-500/30 group-hover:bg-emerald-500/5",
                         file && "border-emerald-500/20 bg-emerald-500/5"
                     )}>
                         {file ? (
                             <div className="flex flex-col items-center text-center">
-                                <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
-                                    <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
+                                    <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8 text-emerald-400" />
                                 </div>
-                                <h3 className="text-lg font-bold mb-1 font-heading">{file.name}</h3>
-                                <p className="text-sm text-white/40 font-medium mb-6">{(file.size / 1024 / 1024).toFixed(2)} MB • Ready for analysis</p>
+                                <h3 className="text-base md:text-lg font-bold mb-1 font-heading truncate max-w-[200px] md:max-w-none">{file.name}</h3>
+                                <p className="text-xs md:text-sm text-white/40 font-medium mb-6">{(file.size / 1024 / 1024).toFixed(2)} MB • Ready</p>
                                 <button
                                     onClick={(e) => { e.stopPropagation(); removeFile(); }}
                                     className="flex items-center gap-2 text-[10px] font-black tracking-widest uppercase text-white/20 hover:text-red-400 transition-colors"
@@ -133,12 +133,12 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                             </div>
                         ) : (
                             <>
-                                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                                    <Upload className="w-8 h-8 text-white/40 group-hover:text-emerald-400 transition-colors" />
+                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                                    <Upload className="w-6 h-6 md:w-8 md:h-8 text-white/40 group-hover:text-emerald-400 transition-colors" />
                                 </div>
-                                <h3 className="text-xl font-bold mb-2 font-heading">Drop your CV here</h3>
-                                <p className="text-sm text-white/40 font-medium">or click to browse from your device</p>
-                                <div className="mt-8 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-widest uppercase text-white/20">
+                                <h3 className="text-lg md:text-xl font-bold mb-2 font-heading">Tap to upload CV</h3>
+                                <p className="text-xs md:text-sm text-white/40 font-medium hidden md:block">or click to browse from your device</p>
+                                <div className="mt-6 md:mt-8 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[8px] md:text-[10px] font-black tracking-widest uppercase text-white/20">
                                     PDF Format Only • Max 10MB
                                 </div>
                             </>
@@ -153,9 +153,9 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                         onChange={handleTextChange}
                         disabled={disabled}
                         placeholder="Paste your CV text here..."
-                        rows={12}
+                        rows={10}
                         className={cn(
-                            "relative w-full px-6 py-6 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-0 focus:border-emerald-500/50 resize-none text-base font-medium placeholder:text-white/20 transition-all",
+                            "relative w-full px-4 md:px-6 py-4 md:py-6 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-0 focus:border-emerald-500/50 resize-none text-sm md:text-base font-medium placeholder:text-white/20 transition-all",
                             disabled && "opacity-50 cursor-not-allowed"
                         )}
                     />
@@ -168,8 +168,8 @@ export default function UploadCV({ onFileSelect, onTextInput, disabled }: Upload
                     <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <AlertCircle className="w-4 h-4 text-white/40" />
                     </div>
-                    <p className="text-xs text-white/40 leading-relaxed font-medium">
-                        <strong className="text-white/60">Note:</strong> Your data is processed securely and never stored permanently without your consent. We use enterprise-grade encryption for all file transfers.
+                    <p className="text-[10px] md:text-xs text-white/40 leading-relaxed font-medium">
+                        <strong className="text-white/60">Note:</strong> Your data is processed securely and never stored permanently without your consent.
                     </p>
                 </div>
             </div>
