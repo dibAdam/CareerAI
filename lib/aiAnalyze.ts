@@ -38,7 +38,7 @@ export async function analyzeCV(
     jobTitle: string,
     company: string
 ): Promise<AnalysisResult> {
-    console.log(`AI Analysis started for ${jobTitle} at ${company}. CV length: ${cvText.length}, Job length: ${jobDescription.length}`);
+    // console.log(`AI Analysis started for ${jobTitle} at ${company}. CV length: ${cvText.length}, Job length: ${jobDescription.length}`);
     const prompt = buildAnalysisPrompt(cvText.toLocaleLowerCase(), jobDescription.toLocaleLowerCase(), jobTitle.toLocaleLowerCase(), company);
 
     try {
@@ -69,7 +69,7 @@ export async function analyzeCV(
         // Try to parse JSON from the response
         let result: AnalysisResult;
 
-        console.log("AI response content:", content);
+        // console.log("AI response content:", content);
 
         try {
             result = JSON.parse(content) as AnalysisResult;

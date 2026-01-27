@@ -16,7 +16,7 @@ export interface LinkedInJobData {
  * Uses a simple fetch approach to get the page content
  */
 export async function scrapeLinkedInJob(url: string): Promise<LinkedInJobData> {
-    console.log("scraping linkedin job", url);
+    // console.log("scraping linkedin job", url);
     try {
         // Validate LinkedIn URL
         if (!isValidLinkedInJobUrl(url)) {
@@ -31,7 +31,7 @@ export async function scrapeLinkedInJob(url: string): Promise<LinkedInJobData> {
             },
         });
 
-        console.log("response after scraping", response);
+        // console.log("response after scraping", response);
 
         if (!response.ok) {
             throw new Error('Failed to fetch LinkedIn job page');
