@@ -34,7 +34,7 @@ export default function Navbar() {
     ];
 
     return (
-        <nav className="fixed top-0 w-full z-[100] border-b border-white/5 bg-black">
+        <nav className="fixed top-0 w-full z-[100] border-b border-white/5 bg-black/30 backdrop-blur-lg">
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <motion.div
                     animate={{ opacity: 1 }}
