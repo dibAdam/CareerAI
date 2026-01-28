@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Github, Mail, Lock, UserPlus, LogIn, ArrowRight, Check, X, ShieldCheck, ShieldAlert } from 'lucide-react'
+import { Github, Mail, Lock, UserPlus, LogIn, ArrowRight, Check, X, ShieldCheck, ShieldAlert, Eye, EyeOff } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { signInAction, signUpAction } from '@/app/actions/auth'
 import { useRouter } from 'next/navigation'
@@ -13,10 +13,12 @@ export default function LoginPage() {
     const [error, setError] = useState<string | null>(null)
     const [message, setMessage] = useState<string | null>(null)
     const [isPending, startTransition] = useTransition()
-
+    
     // Password validation state
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [strength, setStrength] = useState({
         length: false,
         upper: false,
@@ -91,28 +93,28 @@ export default function LoginPage() {
     }
 
     const Requirement = ({ met, text }: { met: boolean, text: string }) => (
-        <div className={`flex items-center gap-2 text-[11px] transition-colors ${met ? 'text-green-400' : 'text-white/20'}`}>
+        <div className={`flex items-center gap-2 text-[11px] transition-colors ${met ? 'text-emerald-400' : 'text-white/20'}`}>
             {met ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
             {text}
         </div>
     )
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#030303] relative overflow-hidden p-4">
-            {/* Background Glows */}
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 rounded-full blur-[120px]" />
+        <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B] relative overflow-hidden p-4">
+            {/* Background Glows - Match landing page */}
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-500/10 rounded-full blur-[120px]" />
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full max-w-md p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl relative z-10"
+                className="w-full max-w-md p-8 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl relative z-10"
             >
                 <div className="text-center mb-8">
                     <motion.h1
                         layout
-                        className="text-3xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent mb-2"
+                        className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-2"
                     >
                         {mode === 'login' ? 'Welcome Back' : 'Create Account'}
                     </motion.h1>
@@ -129,8 +131,9 @@ export default function LoginPage() {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className={`mb-6 p-4 rounded-xl border text-sm overflow-hidden ${error ? 'bg-red-500/10 border-red-500/20 text-red-400' : 'bg-green-500/10 border-green-500/20 text-green-400'
-                                }`}
+                            className={`mb-6 p-4 rounded-xl border text-sm overflow-hidden ${
+                                error ? 'bg-red-500/10 border-red-500/20 text-red-400' : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                            }`}
                         >
                             {error || message}
                         </motion.div>
@@ -141,13 +144,13 @@ export default function LoginPage() {
                     <div className="space-y-2">
                         <label className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">Email Address</label>
                         <div className="relative group">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-blue-400 transition-colors" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-emerald-400 transition-colors" />
                             <input
                                 name="email"
                                 type="email"
                                 required
                                 placeholder="name@example.com"
-                                className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:bg-white/10 outline-none transition-all text-white placeholder:text-white/20"
+                                className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus:border-emerald-500/50 focus:bg-white/10 outline-none transition-all text-white placeholder:text-white/20"
                             />
                         </div>
                     </div>
@@ -155,29 +158,37 @@ export default function LoginPage() {
                     <div className="space-y-2">
                         <label className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">Password</label>
                         <div className="relative group">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-blue-400 transition-colors" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-emerald-400 transition-colors" />
                             <input
                                 name="password"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 required
                                 value={password}
                                 autoComplete="new-password"
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:bg-white/10 outline-none transition-all text-white placeholder:text-white/20"
+                                className="w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border border-white/10 focus:border-emerald-500/50 focus:bg-white/10 outline-none transition-all text-white placeholder:text-white/20"
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                            >
+                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
                         </div>
-
+                        
                         {mode === 'signup' && (
                             <div className="px-1 pt-1 space-y-3">
                                 <div className="flex gap-1 h-1">
                                     {[1, 2, 3, 4, 5].map((i) => (
-                                        <div
-                                            key={i}
-                                            className={`flex-1 rounded-full transition-all duration-500 ${i <= strengthScore - (strength.match ? 0 : 0) // match doesn't count for strength
-                                                ? strengthScore >= 5 ? 'bg-green-500' : strengthScore >= 3 ? 'bg-yellow-500' : 'bg-red-500'
-                                                : 'bg-white/5'
-                                                }`}
+                                        <div 
+                                            key={i} 
+                                            className={`flex-1 rounded-full transition-all duration-500 ${
+                                                i <= strengthScore - (strength.match ? 0 : 0)
+                                                    ? strengthScore >= 5 ? 'bg-emerald-500' : strengthScore >= 3 ? 'bg-yellow-500' : 'bg-red-500'
+                                                    : 'bg-white/5'
+                                            }`} 
                                         />
                                     ))}
                                 </div>
@@ -202,19 +213,28 @@ export default function LoginPage() {
                             >
                                 <label className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">Confirm Password</label>
                                 <div className="relative group">
-                                    <ShieldCheck className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${confirmPassword === '' ? 'text-white/20' : strength.match ? 'text-green-400' : 'text-red-400'
-                                        }`} />
+                                    <ShieldCheck className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${
+                                        confirmPassword === '' ? 'text-white/20' : strength.match ? 'text-emerald-400' : 'text-red-400'
+                                    }`} />
                                     <input
                                         name="confirmPassword"
-                                        type="password"
+                                        type={showConfirmPassword ? "text" : "password"}
                                         autoComplete="new-password"
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         placeholder="••••••••"
-                                        className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border transition-all text-white placeholder:text-white/20 outline-none ${confirmPassword === '' ? 'border-white/10' : strength.match ? 'border-green-500/30 bg-green-500/5' : 'border-red-500/30 bg-red-500/5'
-                                            }`}
+                                        className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border transition-all text-white placeholder:text-white/20 outline-none ${
+                                            confirmPassword === '' ? 'border-white/10' : strength.match ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-red-500/30 bg-red-500/5'
+                                        }`}
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                                    >
+                                        {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    </button>
                                 </div>
                                 {confirmPassword !== '' && !strength.match && (
                                     <p className="text-[10px] text-red-400 ml-1">Passwords do not match</p>
@@ -226,7 +246,7 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={!!isLoading || isPending || !canSubmit}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 mt-4"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold hover:from-emerald-400 hover:to-cyan-400 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20 mt-4"
                     >
                         {isLoading === 'email' ? (
                             <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -244,7 +264,7 @@ export default function LoginPage() {
                         <div className="w-full border-t border-white/5"></div>
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-[#030303] px-4 text-white/20 tracking-widest">Or continue with</span>
+                        <span className="bg-[#0A0A0B] px-4 text-white/20 tracking-widest">Or continue with</span>
                     </div>
                 </div>
 
@@ -252,7 +272,7 @@ export default function LoginPage() {
                     <button
                         onClick={() => handleOAuthLogin('google')}
                         disabled={!!isLoading}
-                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98] disabled:opacity-50"
+                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-emerald-500/20 transition-all active:scale-[0.98] disabled:opacity-50"
                     >
                         {isLoading === 'google' ? (
                             <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -270,7 +290,7 @@ export default function LoginPage() {
                     <button
                         onClick={() => handleOAuthLogin('github')}
                         disabled={!!isLoading}
-                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-[0.98] disabled:opacity-50"
+                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-emerald-500/20 transition-all active:scale-[0.98] disabled:opacity-50"
                     >
                         {isLoading === 'github' ? (
                             <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -291,7 +311,7 @@ export default function LoginPage() {
                         className="text-sm text-white/40 hover:text-white transition-colors flex items-center justify-center gap-2 mx-auto group"
                     >
                         {mode === 'login' ? "Don't have an account?" : "Already have an account?"}
-                        <span className="text-blue-400 font-semibold group-hover:underline flex items-center gap-1">
+                        <span className="text-emerald-400 font-semibold group-hover:underline flex items-center gap-1">
                             {mode === 'login' ? 'Sign Up' : 'Sign In'}
                             <ArrowRight className="w-3 h-3" />
                         </span>
