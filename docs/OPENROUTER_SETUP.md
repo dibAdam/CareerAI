@@ -27,7 +27,7 @@ OpenRouter gives you access to **multiple AI models** through a single API:
 
 1. Go to [https://openrouter.ai/keys](https://openrouter.ai/keys)
 2. Click **"Create Key"**
-3. Give it a name (e.g., "ATS CV Optimizer")
+3. Give it a name (e.g., "Nextrova")
 4. Click **"Create"**
 5. **Copy the key** (starts with `sk-or-v1-`)
 6. **Save it securely** - you won't see it again!

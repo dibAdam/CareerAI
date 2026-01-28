@@ -1,7 +1,7 @@
 # Consent Flow Documentation
 
 ## Overview
-The CareerAI platform implements a GDPR-compliant consent flow that ensures users explicitly agree to data processing before using the service.
+The Nextrova platform implements a GDPR-compliant consent flow that ensures users explicitly agree to data processing before using the service.
 
 ## User Journey
 

@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# 🚀 ATS CV Optimizer
+# 🚀 Nextrova - ATS CV Optimizer
 
 An AI-powered tool that analyzes your CV against job descriptions and provides actionable feedback to help you pass Applicant Tracking Systems (ATS).
 
@@ -48,7 +47,7 @@ An AI-powered tool that analyzes your CV against job descriptions and provides a
 
 ```bash
 git clone <your-repo-url>
-cd careerAi
+cd nextrova
 ```
 
 ### 2. Install Dependencies
@@ -115,7 +114,7 @@ Use the sample data from [`SETUP_CHECKLIST.md`](./SETUP_CHECKLIST.md) to test
 ## 🏗️ Project Structure
 
 ```
-careerAi/
+nextrova/
 ├── app/
 │   ├── landing/          # Landing page
 │   ├── analyze/          # CV analysis page
@@ -293,6 +292,7 @@ See [`SETUP_CHECKLIST.md`](./SETUP_CHECKLIST.md) for more troubleshooting tips
 - [ ] Premium features
 - [ ] Mobile app
 - [ ] Chrome extension
+- [ ] Nextrova Pro
 
 ## 🤝 Contributing
 
@@ -326,6 +326,4 @@ MIT License - feel free to use this project for personal or commercial purposes
 **Built with ❤️ for job seekers everywhere**
 
 Made by [Your Name]
-=======
-# CareerAI
->>>>>>> 84126b6463bbdbccf49f337e7d6fd595a58c6f25
+# Nextrova

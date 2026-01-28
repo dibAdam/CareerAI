@@ -1,6 +1,6 @@
 # 🚀 Quick Start Guide
 
-Get the ATS CV Optimizer running in 5 minutes!
+Get Nextrova running in 5 minutes!
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ Get the ATS CV Optimizer running in 5 minutes!
 ```
 1. Go to supabase.com → Sign up/Login
 2. Click "New Project"
-3. Name it "ats-cv-optimizer"
+3. Name it "nextrova"
 4. Set a database password (save it!)
 5. Choose your region
 6. Wait ~2 minutes for setup

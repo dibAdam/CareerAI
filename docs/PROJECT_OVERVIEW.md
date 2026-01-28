@@ -1,4 +1,4 @@
-# 🎯 ATS CV Optimizer - Complete Project Overview
+# 🎯 Nextrova - Complete Project Overview
 
 ## Project Status: ✅ COMPLETE & READY
 
@@ -124,7 +124,7 @@ Results Page (dynamic route)
 ## File Structure
 
 ```
-careerAi/
+nextrova/
 ├── app/
 │   ├── page.tsx                    # Main upload page
 │   ├── layout.tsx                  # Root layout
@@ -311,7 +311,7 @@ Follow `QUICKSTART.md` to get running locally
 
 ## 🎉 Project Complete!
 
-The ATS CV Optimizer V1 is **fully implemented** and **ready to use**.
+The Nextrova V1 is **fully implemented** and **ready to use**.
 
 Follow the setup guides to get started, or dive into the code to customize it.
 

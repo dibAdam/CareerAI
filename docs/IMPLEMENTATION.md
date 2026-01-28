@@ -1,4 +1,4 @@
-# ATS CV Optimizer - V1 Implementation Summary
+# Nextrova - V1 Implementation Summary
 
 ## ✅ What Was Built
 

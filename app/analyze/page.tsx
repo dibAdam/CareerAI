@@ -84,7 +84,7 @@ export default function AnalyzePage() {
                         <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-emerald-500/20">
                             <Sparkles className="w-6 h-6 text-white" />
                         </div>
-                        <span className="text-xl font-bold tracking-tight font-heading">Career AI</span>
+                        <span className="text-xl font-bold tracking-tight font-heading">Nextrova</span>
                     </Link>
 
                     <Link

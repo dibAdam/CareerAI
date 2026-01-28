@@ -48,7 +48,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="text-lg md:text-2xl text-white/60 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed font-medium"
                 >
-                    Career AI bridges the gap between your CV and the job description.
+                    Nextrova bridges the gap between your CV and the job description.
                     Beat ATS filters and align your experience with recruiter expectations
                     using precision AI analysis.
                 </motion.p>

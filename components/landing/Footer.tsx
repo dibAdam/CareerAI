@@ -12,7 +12,7 @@ export default function Footer() {
                         <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-lg flex items-center justify-center">
                             <Sparkles className="w-5 h-5 text-white" />
                         </div>
-                        <span className="text-lg font-bold tracking-tight font-heading">Career AI</span>
+                        <span className="text-lg font-bold tracking-tight font-heading">Nextrova</span>
                     </div>
 
                     <div className="flex gap-8 md:gap-12">
@@ -22,7 +22,7 @@ export default function Footer() {
                     </div>
 
                     <p className="text-[10px] md:text-xs font-bold tracking-widest uppercase text-white/20 text-center md:text-left">
-                        © 2026 Career AI. The Science of the Perfect Match.
+                        © 2026 Nextrova. The Science of the Perfect Match.
                     </p>
                 </div>
             </div>

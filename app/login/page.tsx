@@ -13,7 +13,7 @@ export default function LoginPage() {
     const [error, setError] = useState<string | null>(null)
     const [message, setMessage] = useState<string | null>(null)
     const [isPending, startTransition] = useTransition()
-    
+
     // Password validation state
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -121,7 +121,7 @@ export default function LoginPage() {
                     <motion.p layout className="text-white/40">
                         {mode === 'login'
                             ? 'Sign in to continue your career journey'
-                            : 'Join CareerAI to optimize your professional path'}
+                            : 'Join Nextrova to optimize your professional path'}
                     </motion.p>
                 </div>
 
@@ -131,9 +131,8 @@ export default function LoginPage() {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className={`mb-6 p-4 rounded-xl border text-sm overflow-hidden ${
-                                error ? 'bg-red-500/10 border-red-500/20 text-red-400' : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-                            }`}
+                            className={`mb-6 p-4 rounded-xl border text-sm overflow-hidden ${error ? 'bg-red-500/10 border-red-500/20 text-red-400' : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                                }`}
                         >
                             {error || message}
                         </motion.div>
@@ -177,18 +176,17 @@ export default function LoginPage() {
                                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                             </button>
                         </div>
-                        
+
                         {mode === 'signup' && (
                             <div className="px-1 pt-1 space-y-3">
                                 <div className="flex gap-1 h-1">
                                     {[1, 2, 3, 4, 5].map((i) => (
-                                        <div 
-                                            key={i} 
-                                            className={`flex-1 rounded-full transition-all duration-500 ${
-                                                i <= strengthScore - (strength.match ? 0 : 0)
-                                                    ? strengthScore >= 5 ? 'bg-emerald-500' : strengthScore >= 3 ? 'bg-yellow-500' : 'bg-red-500'
-                                                    : 'bg-white/5'
-                                            }`} 
+                                        <div
+                                            key={i}
+                                            className={`flex-1 rounded-full transition-all duration-500 ${i <= strengthScore - (strength.match ? 0 : 0)
+                                                ? strengthScore >= 5 ? 'bg-emerald-500' : strengthScore >= 3 ? 'bg-yellow-500' : 'bg-red-500'
+                                                : 'bg-white/5'
+                                                }`}
                                         />
                                     ))}
                                 </div>
@@ -213,9 +211,8 @@ export default function LoginPage() {
                             >
                                 <label className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">Confirm Password</label>
                                 <div className="relative group">
-                                    <ShieldCheck className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${
-                                        confirmPassword === '' ? 'text-white/20' : strength.match ? 'text-emerald-400' : 'text-red-400'
-                                    }`} />
+                                    <ShieldCheck className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${confirmPassword === '' ? 'text-white/20' : strength.match ? 'text-emerald-400' : 'text-red-400'
+                                        }`} />
                                     <input
                                         name="confirmPassword"
                                         type={showConfirmPassword ? "text" : "password"}
@@ -224,9 +221,8 @@ export default function LoginPage() {
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         placeholder="••••••••"
-                                        className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border transition-all text-white placeholder:text-white/20 outline-none ${
-                                            confirmPassword === '' ? 'border-white/10' : strength.match ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-red-500/30 bg-red-500/5'
-                                        }`}
+                                        className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border transition-all text-white placeholder:text-white/20 outline-none ${confirmPassword === '' ? 'border-white/10' : strength.match ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-red-500/30 bg-red-500/5'
+                                            }`}
                                     />
                                     <button
                                         type="button"
@@ -320,7 +316,7 @@ export default function LoginPage() {
 
                 <div className="mt-8 pt-6 border-t border-white/5">
                     <p className="text-center text-[10px] text-white/20 leading-relaxed uppercase tracking-widest">
-                        Secure Authentication by Supabase
+                        Secure Authentication by Nextrova
                     </p>
                 </div>
             </motion.div>

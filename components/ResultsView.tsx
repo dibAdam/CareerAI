@@ -35,7 +35,7 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                         <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-lg md:rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-emerald-500/20">
                             <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-white" />
                         </div>
-                        <span className="text-lg md:text-xl font-bold tracking-tight font-heading">Career AI</span>
+                        <span className="text-lg md:text-xl font-bold tracking-tight font-heading">Nextrova</span>
                     </Link>
 
                     <div className="flex items-center gap-2 md:gap-4">

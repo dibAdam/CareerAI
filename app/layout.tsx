@@ -13,8 +13,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-    title: 'Career AI | The Science of the Perfect Match',
-    description: 'Stop guessing. Start interviewing. Career AI bridges the gap between your CV and the job description using precision AI analysis.',
+    title: 'Nextrova | The Science of the Perfect Match',
+    description: 'Stop guessing. Start interviewing. Nextrova bridges the gap between your CV and the job description using precision AI analysis.',
     keywords: ['AI', 'Career', 'CV', 'Resume', 'ATS', 'Job Search', 'Optimization'],
 };
 

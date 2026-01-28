@@ -1,4 +1,4 @@
-# Setup Guide - ATS CV Optimizer
+# Setup Guide - Nextrova
 
 Follow these steps to get the application running locally.
 
@@ -14,7 +14,7 @@ Already done! ✅
 2. Sign up or log in
 3. Click "New Project"
 4. Fill in:
-   - **Name**: `ats-cv-optimizer` (or any name)
+   - **Name**: `nextrova` (or any name)
    - **Database Password**: Create a strong password (save it!)
    - **Region**: Choose closest to you
 5. Click "Create new project" and wait ~2 minutes
@@ -44,7 +44,7 @@ Already done! ✅
 2. Sign up or log in
 3. Go to **API Keys** section
 4. Click "Create new secret key"
-5. Give it a name (e.g., "ATS CV Optimizer")
+5. Give it a name (e.g., "Nextrova")
 6. Copy the key (you won't see it again!)
 
 ### 3.2 Add Credits (if needed)

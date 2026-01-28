@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide will help you set up Supabase for the ATS CV Optimizer application.
+This guide will help you set up Supabase for the Nextrova application.
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ This guide will help you set up Supabase for the ATS CV Optimizer application.
 2. Sign up or log in
 3. Click **"New Project"**
 4. Fill in:
-   - **Name**: `ats-cv-optimizer` (or your choice)
+   - **Name**: `nextrova` (or your choice)
    - **Database Password**: Create a strong password (save it!)
    - **Region**: Choose closest to your users
 5. Click **"Create new project"**
@@ -311,4 +311,4 @@ If you need help:
 
 ---
 
-**You're all set!** 🎉 Your ATS CV Optimizer is now connected to Supabase and ready to analyze CVs!
+**You're all set!** 🎉 Your Nextrova is now connected to Supabase and ready to analyze CVs!
