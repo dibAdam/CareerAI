@@ -20,6 +20,7 @@ export const analyses = pgTable('analyses', {
     jobDescription: text('job_description').notNull(),
     cvText: text('cv_text').notNull(),
     matchScore: integer('match_score'),
+    potentialScore: integer('potential_score'),
     summary: text('summary'),
     missingKeywords: text('missing_keywords').array(),
     priorityActions: text('priority_actions').array(),

@@ -70,6 +70,7 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
             jobDescription: jobData.description,
             cvText: cvText,
             matchScore: analysis.overall_match_score,
+            potentialScore: analysis.potential_score,
             summary: analysis.summary,
             missingKeywords: analysis.missing_keywords,
             priorityActions: analysis.priority_actions,

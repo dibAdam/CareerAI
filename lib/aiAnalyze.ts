@@ -15,6 +15,7 @@ const MODEL = process.env.OPENROUTER_MODEL || 'anthropic/claude-3.5-sonnet'; // 
 
 export interface AnalysisResult {
     overall_match_score: number;
+    potential_score: number;
     summary: string;
     missing_keywords: string[];
     section_feedback: {
@@ -54,7 +55,7 @@ export async function analyzeCV(
                     content: prompt,
                 },
             ],
-            temperature: 0.7, // Higher temperature for more varied analysis
+            temperature: 0.5, // Higher temperature for more varied analysis
             // Note: response_format JSON mode may not be supported by all models
             // If you get errors, remove this line and rely on prompt instructions
             response_format: { type: 'json_object' },
@@ -105,7 +106,8 @@ Your role is to analyze CVs against job descriptions and provide actionable, ATS
 
 You MUST respond with valid JSON in this exact structure:
 {
-  "overall_match_score": <number 0-100>,
+  "overall_match_score": <number 0-100, be realistic but fair. 0 should only be for completely irrelevant CVs>,
+  "potential_score": <number 0-100, the score the candidate could achieve if they implement all your priority actions>,
   "summary": "<brief 2-3 sentence overview>",
   "missing_keywords": ["keyword1", "keyword2", ...],
   "section_feedback": {
@@ -134,7 +136,13 @@ Focus on:
 - Concrete, actionable improvements
 - Prioritized fixes (high impact first)
 
-Be constructive, specific, and helpful. Avoid generic advice. Every analysis MUST be unique and deeply tailored to the specific text provided. Do not use templates or repetitive phrases across different analyses.
+Scoring Guidance:
+- 80-100: Excellent match, ready for submission.
+- 60-79: Good match, needs minor tweaks.
+- 40-59: Moderate match, requires significant optimization.
+- 0-39: Poor match or major gaps. Only give 0 if the CV is for a completely different field.
+
+Be constructive, specific, and helpful. Avoid generic advice. Every analysis MUST be unique and deeply tailored to the specific text provided.
 
 IMPORTANT: Return ONLY the JSON object, no additional text or markdown formatting.`;
 
@@ -175,6 +183,10 @@ Request ID: ${Date.now()}`;
 function validateAnalysisResult(result: any): asserts result is AnalysisResult {
     if (typeof result.overall_match_score !== 'number') {
         throw new Error('Invalid analysis result: missing overall_match_score');
+    }
+
+    if (typeof result.potential_score !== 'number') {
+        throw new Error('Invalid analysis result: missing potential_score');
     }
 
     if (result.overall_match_score < 0 || result.overall_match_score > 100) {

@@ -6,9 +6,10 @@ import { Target, TrendingUp, AlertCircle } from 'lucide-react';
 
 interface MatchScoreProps {
     score: number;
+    potentialScore: number;
 }
 
-export default function MatchScore({ score }: MatchScoreProps) {
+export default function MatchScore({ score, potentialScore }: MatchScoreProps) {
     const getScoreColor = (score: number) => {
         if (score >= 80) return 'text-emerald-400';
         if (score >= 60) return 'text-cyan-400';
@@ -22,6 +23,8 @@ export default function MatchScore({ score }: MatchScoreProps) {
         if (score >= 40) return 'Moderate Alignment';
         return 'Significant Gaps';
     };
+
+    const potentialImprovement = Math.max(0, potentialScore - score);
 
     return (
         <div className="glass-card p-10 relative overflow-hidden group bg-surface/50">
@@ -99,7 +102,7 @@ export default function MatchScore({ score }: MatchScoreProps) {
                                 <TrendingUp className="w-3 h-3 text-emerald-400" />
                                 <span className="text-[10px] font-black tracking-widest uppercase text-white/20">Potential</span>
                             </div>
-                            <div className="text-xl font-bold font-heading">+{Math.min(100 - score, 15)}%</div>
+                            <div className="text-xl font-bold font-heading">+{potentialImprovement}%</div>
                         </div>
                         <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                             <div className="flex items-center gap-2 mb-1">

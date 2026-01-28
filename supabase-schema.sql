@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS analyses (
   job_description TEXT NOT NULL,
   cv_text TEXT NOT NULL,
   match_score INTEGER CHECK (match_score >= 0 AND match_score <= 100),
+  potential_score INTEGER CHECK (potential_score >= 0 AND potential_score <= 100),
   summary TEXT,
   missing_keywords TEXT[], -- Array of missing keywords
   priority_actions TEXT[], -- Array of priority actions

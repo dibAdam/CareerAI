@@ -26,6 +26,17 @@ interface ResultsViewProps {
 }
 
 export default function ResultsView({ analysis, sectionFeedback }: ResultsViewProps) {
+    // Defensive mapping to handle both camelCase (Drizzle) and snake_case (Raw DB/AI)
+    const matchScore = analysis.matchScore ?? analysis.match_score ?? 0;
+    const potentialScore = analysis.potentialScore ?? analysis.potential_score ?? 0;
+    const summary = analysis.summary;
+    const missingKeywords = analysis.missingKeywords ?? analysis.missing_keywords ?? [];
+    const priorityActions = analysis.priorityActions ?? analysis.priority_actions ?? [];
+    const atsTips = analysis.atsTips ?? analysis.ats_tips ?? [];
+    const jobTitle = analysis.jobTitle ?? analysis.job_title ?? 'Job Position';
+    const company = analysis.company ?? 'Company';
+    const createdAt = analysis.createdAt ?? analysis.created_at;
+
     return (
         <div className="min-h-screen bg-[#0A0A0B] text-white selection:bg-emerald-500/30 font-sans">
             {/* Header */}
@@ -68,7 +79,7 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                             className="flex items-center gap-2 text-[8px] md:text-[10px] font-black tracking-[0.3em] uppercase text-white/20 mb-4"
                         >
                             <Calendar className="w-3 h-3" />
-                            Analysis Completed • {new Date(analysis.created_at).toLocaleDateString()}
+                            Analysis Completed • {createdAt ? new Date(createdAt).toLocaleDateString() : 'Recent'}
                         </motion.div>
 
                         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
@@ -82,7 +93,7 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                                 <div className="flex flex-wrap items-center gap-4 md:gap-6">
                                     <div className="flex items-center gap-2 text-sm md:text-base text-white/60 font-medium">
                                         <Briefcase className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                                        {analysis.job_title}
+                                        {jobTitle}
                                     </div>
                                     <div className="flex items-center gap-2 text-sm md:text-base text-white/60 font-medium">
                                         <Building2 className="w-4 h-4 text-amethyst-400 flex-shrink-0" />
@@ -113,9 +124,12 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
                         {/* Left Column - Score & Summary */}
                         <div className="lg:col-span-3 space-y-6 md:space-y-8">
-                            <MatchScore score={analysis.match_score || 0} />
+                            <MatchScore
+                                score={matchScore}
+                                potentialScore={potentialScore}
+                            />
 
-                            {analysis.summary && (
+                            {summary && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -124,15 +138,15 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                                 >
                                     <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 tracking-tight font-heading">Executive Summary</h2>
                                     <p className="text-white/60 leading-relaxed font-medium text-base md:text-lg">
-                                        {analysis.summary}
+                                        {summary}
                                     </p>
                                 </motion.div>
                             )}
 
-                            {analysis.missing_keywords && analysis.missing_keywords.length > 0 && (
+                            {missingKeywords && missingKeywords.length > 0 && (
                                 <ReportCard
                                     title="Missing Keywords"
-                                    items={analysis.missing_keywords}
+                                    items={missingKeywords}
                                     variant="info"
                                 />
                             )}
@@ -142,18 +156,18 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
 
                         {/* Right Column - Insights */}
                         <div className="space-y-6 md:space-y-8">
-                            {analysis.priority_actions && analysis.priority_actions.length > 0 && (
+                            {priorityActions && priorityActions.length > 0 && (
                                 <ReportCard
                                     title="Priority Actions"
-                                    items={analysis.priority_actions}
+                                    items={priorityActions}
                                     variant="warning"
                                 />
                             )}
 
-                            {analysis.ats_tips && analysis.ats_tips.length > 0 && (
+                            {atsTips && atsTips.length > 0 && (
                                 <ReportCard
                                     title="ATS Optimization"
-                                    items={analysis.ats_tips}
+                                    items={atsTips}
                                     variant="success"
                                 />
                             )}
