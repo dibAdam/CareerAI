@@ -62,7 +62,10 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
             <main className="max-w-6xl mx-auto px-4 py-12">
                 <div className="space-y-8">
                     {/* Match Score */}
-                    <MatchScore score={analysis.matchScore || 0} />
+                    <MatchScore
+                        score={analysis.matchScore || 0}
+                        potentialScore={analysis.potentialScore || 0}
+                    />
 
                     {/* Summary */}
                     {analysis.summary && (

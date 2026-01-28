@@ -40,7 +40,7 @@ export async function analyzeCV(
     company: string
 ): Promise<AnalysisResult> {
     // console.log(`AI Analysis started for ${jobTitle} at ${company}. CV length: ${cvText.length}, Job length: ${jobDescription.length}`);
-    const prompt = buildAnalysisPrompt(cvText.toLocaleLowerCase(), jobDescription.toLocaleLowerCase(), jobTitle.toLocaleLowerCase(), company);
+    const prompt = buildAnalysisPrompt(cvText, jobDescription, jobTitle, company);
 
     try {
         const response = await openrouter.chat.completions.create({
@@ -55,9 +55,7 @@ export async function analyzeCV(
                     content: prompt,
                 },
             ],
-            temperature: 0.5, // Higher temperature for more varied analysis
-            // Note: response_format JSON mode may not be supported by all models
-            // If you get errors, remove this line and rely on prompt instructions
+            temperature: 0.3, // Lower temperature for more consistent and accurate analysis
             response_format: { type: 'json_object' },
         });
 
@@ -70,16 +68,22 @@ export async function analyzeCV(
         // Try to parse JSON from the response
         let result: AnalysisResult;
 
-        // console.log("AI response content:", content);
-
         try {
-            result = JSON.parse(content) as AnalysisResult;
+            // Clean the content of any potential markdown artifacts if they exist
+            const cleanedContent = content.trim().replace(/^```json\n?/, '').replace(/\n?```$/, '');
+            result = JSON.parse(cleanedContent) as AnalysisResult;
         } catch (parseError) {
-            // If JSON parsing fails, try to extract JSON from markdown code blocks
+            // Fallback: try to extract JSON from markdown code blocks
             const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || content.match(/```\n([\s\S]*?)\n```/);
             if (jsonMatch) {
-                result = JSON.parse(jsonMatch[1]) as AnalysisResult;
+                try {
+                    result = JSON.parse(jsonMatch[1]) as AnalysisResult;
+                } catch (innerError) {
+                    console.error('Failed to parse extracted JSON:', jsonMatch[1]);
+                    throw new Error('AI returned invalid JSON structure');
+                }
             } else {
+                console.error('Raw AI response that failed to parse:', content);
                 throw new Error('Failed to parse AI response as JSON');
             }
         }

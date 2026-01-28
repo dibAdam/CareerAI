@@ -48,6 +48,15 @@ export async function extractJobText(input: JobInput): Promise<ExtractedJob> {
     // Process pasted text
     const description = jobUrl.trim();
 
+    // Check if the user pasted a URL instead of text in manual mode
+    const urlPattern = /^(https?:\/\/[^\s]+)$/i;
+    if (urlPattern.test(description)) {
+        throw new Error(
+            'It looks like you pasted a URL instead of the job description. ' +
+            'Please copy the actual text of the job posting and paste it here, or switch to "URL" mode.'
+        );
+    }
+
     if (!description || description.length < 50) {
         throw new Error('Job description is too short. Please provide a complete job posting.');
     }
