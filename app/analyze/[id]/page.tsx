@@ -31,7 +31,10 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
         orderBy: [desc(analysisSections.priority)],
     });
 
-    const sectionFeedback = sections || [];
+    const sectionFeedback = sections.map(s => ({
+        ...s,
+        priority: (s.priority as "low" | "medium" | "high") || undefined
+    }));
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">

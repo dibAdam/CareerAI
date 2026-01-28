@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { motion } from 'framer-motion'
 import { Trash2, ShieldOff, AlertTriangle, CheckCircle2, LogOut } from 'lucide-react'
@@ -101,7 +102,13 @@ export default function SettingsPage() {
                         <h2 className="text-xl font-semibold mb-6">Account</h2>
                         <div className="flex items-center gap-4 mb-8">
                             {profile?.avatar_url ? (
-                                <img src={profile.avatar_url} alt={profile.full_name} className="w-16 h-16 rounded-full border-2 border-white/10" />
+                                <Image
+                                    src={profile.avatar_url}
+                                    alt={profile.full_name || 'Avatar'}
+                                    width={64}
+                                    height={64}
+                                    className="w-16 h-16 rounded-full border-2 border-white/10 object-cover"
+                                />
                             ) : (
                                 <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-2xl font-bold">
                                     {profile?.full_name?.[0] || profile?.email?.[0]}
@@ -152,7 +159,7 @@ export default function SettingsPage() {
                                 Delete Account
                             </h3>
                             <p className="text-red-400/60 text-sm mb-6">
-                                This action is irreversible. All your analyses, CV data, and profile information will be wiped from our servers in compliance with GDPR "Right to be Forgotten".
+                                This action is irreversible. All your analyses, CV data, and profile information will be wiped from our servers in compliance with GDPR &quot;Right to be Forgotten&quot;.
                             </p>
                             <button
                                 onClick={handleDeleteData}
