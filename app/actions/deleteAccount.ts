@@ -1,8 +1,9 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { db } from '@/lib/db'
+import { profiles } from '@/db/schema'
+import { eq } from 'drizzle-orm'
 
 export async function deleteAccountAction() {
     const supabase = await createClient()
@@ -12,23 +13,16 @@ export async function deleteAccountAction() {
         return { success: false, error: 'Not authenticated' }
     }
 
-    // To delete the user from auth.users, we need the service role key.
-    // Since we don't want to expose that in the client, we do it here.
-    // However, for this demo, we'll assume the user just wants to wipe their data.
-    // A real production app would use a Supabase Admin client here.
+    try {
+        // Wipe profile (Cascade in DB handles analyses and sections)
+        await db.delete(profiles).where(eq(profiles.id, user.id))
 
-    // Wipe profile and analyses (RLS/Cascade will handle analyses if we delete profile)
-    const { error } = await supabase
-        .from('profiles')
-        .delete()
-        .eq('id', user.id)
+        // Sign out
+        await supabase.auth.signOut()
 
-    if (error) {
-        return { success: false, error: error.message }
+        return { success: true }
+    } catch (error: any) {
+        console.error('Delete account error:', error)
+        return { success: false, error: error.message || 'Failed to delete account' }
     }
-
-    // Sign out
-    await supabase.auth.signOut()
-
-    return { success: true }
 }

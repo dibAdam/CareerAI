@@ -4,6 +4,8 @@ import { analyzeCV } from '@/lib/aiAnalyze';
 import { extractCVText } from '@/lib/extractCVText';
 import { extractJobText } from '@/lib/extractJobText';
 import { createClient } from '@/lib/supabase/server';
+import { db } from '@/lib/db';
+import { analyses, analysisSections } from '@/db/schema';
 
 export interface AnalyzeCVInput {
     cvFile?: File;
@@ -60,43 +62,34 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
             jobData.company
         );
 
-        // Step 4: Save to database
-        const { data: analysisRecord, error: analysisError } = await supabase
-            .from('analyses')
-            .insert({
-                user_id: user.id,
-                job_title: jobData.title,
-                company: jobData.company,
-                job_description: jobData.description,
-                cv_text: cvText,
-                match_score: analysis.overall_match_score,
-                summary: analysis.summary,
-                missing_keywords: analysis.missing_keywords,
-                priority_actions: analysis.priority_actions,
-                ats_tips: analysis.ats_tips,
-            })
-            .select()
-            .single();
+        // Step 4: Save to database using Drizzle
+        const [analysisRecord] = await db.insert(analyses).values({
+            userId: user.id,
+            jobTitle: jobData.title,
+            company: jobData.company,
+            jobDescription: jobData.description,
+            cvText: cvText,
+            matchScore: analysis.overall_match_score,
+            summary: analysis.summary,
+            missingKeywords: analysis.missing_keywords,
+            priorityActions: analysis.priority_actions,
+            atsTips: analysis.ats_tips,
+        }).returning();
 
-        if (analysisError || !analysisRecord) {
-            console.error('Database error:', analysisError);
+        if (!analysisRecord) {
             return { success: false, error: 'Failed to save analysis' };
         }
 
-        // Step 5: Save section feedback
-        const sections = Object.entries(analysis.section_feedback).map(([section, feedback]) => ({
-            analysis_id: analysisRecord.id,
+        // Step 5: Save section feedback using Drizzle
+        const sectionsToInsert = Object.entries(analysis.section_feedback).map(([section, feedback]) => ({
+            analysisId: analysisRecord.id,
             section,
             feedback,
             priority: determinePriority(section, feedback),
         }));
 
-        const { error: sectionsError } = await supabase
-            .from('analysis_sections')
-            .insert(sections);
-
-        if (sectionsError) {
-            console.error('Sections error:', sectionsError);
+        if (sectionsToInsert.length > 0) {
+            await db.insert(analysisSections).values(sectionsToInsert);
         }
 
         return {

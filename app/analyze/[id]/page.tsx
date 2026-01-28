@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { db } from '@/lib/db';
+import { analyses, analysisSections } from '@/db/schema';
+import { eq, desc } from 'drizzle-orm';
 import MatchScore from '@/components/MatchScore';
 import SectionFeedback from '@/components/SectionFeedback';
 import ReportCard from '@/components/ReportCard';
@@ -14,23 +16,20 @@ interface AnalyzePageProps {
 export default async function AnalyzePage({ params }: AnalyzePageProps) {
     const { id } = await params;
 
-    // Fetch analysis from database
-    const { data: analysis, error: analysisError } = await supabase
-        .from('analyses')
-        .select('*')
-        .eq('id', id)
-        .single();
+    // Fetch analysis from database using Drizzle
+    const analysis = await db.query.analyses.findFirst({
+        where: eq(analyses.id, id),
+    });
 
-    if (analysisError || !analysis) {
+    if (!analysis) {
         notFound();
     }
 
-    // Fetch section feedback
-    const { data: sections, error: sectionsError } = await supabase
-        .from('analysis_sections')
-        .select('*')
-        .eq('analysis_id', id)
-        .order('priority', { ascending: false });
+    // Fetch section feedback using Drizzle
+    const sections = await db.query.analysisSections.findMany({
+        where: eq(analysisSections.analysisId, id),
+        orderBy: [desc(analysisSections.priority)],
+    });
 
     const sectionFeedback = sections || [];
 
@@ -43,7 +42,7 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900">Analysis Results</h1>
                             <p className="text-gray-600 mt-1">
-                                {analysis.job_title} at {analysis.company}
+                                {analysis.jobTitle} at {analysis.company}
                             </p>
                         </div>
                         <Link
@@ -60,7 +59,7 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
             <main className="max-w-6xl mx-auto px-4 py-12">
                 <div className="space-y-8">
                     {/* Match Score */}
-                    <MatchScore score={analysis.match_score || 0} />
+                    <MatchScore score={analysis.matchScore || 0} />
 
                     {/* Summary */}
                     {analysis.summary && (
@@ -71,19 +70,19 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
                     )}
 
                     {/* Priority Actions */}
-                    {analysis.priority_actions && analysis.priority_actions.length > 0 && (
+                    {analysis.priorityActions && analysis.priorityActions.length > 0 && (
                         <ReportCard
                             title="Priority Actions"
-                            items={analysis.priority_actions}
+                            items={analysis.priorityActions}
                             variant="warning"
                         />
                     )}
 
                     {/* Missing Keywords */}
-                    {analysis.missing_keywords && analysis.missing_keywords.length > 0 && (
+                    {analysis.missingKeywords && analysis.missingKeywords.length > 0 && (
                         <ReportCard
                             title="Missing Keywords"
-                            items={analysis.missing_keywords}
+                            items={analysis.missingKeywords}
                             variant="info"
                         />
                     )}
@@ -92,10 +91,10 @@ export default async function AnalyzePage({ params }: AnalyzePageProps) {
                     {sectionFeedback.length > 0 && <SectionFeedback sections={sectionFeedback} />}
 
                     {/* ATS Tips */}
-                    {analysis.ats_tips && analysis.ats_tips.length > 0 && (
+                    {analysis.atsTips && analysis.atsTips.length > 0 && (
                         <ReportCard
                             title="ATS Optimization Tips"
-                            items={analysis.ats_tips}
+                            items={analysis.atsTips}
                             variant="success"
                         />
                     )}

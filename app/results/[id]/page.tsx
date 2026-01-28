@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { db } from '@/lib/db';
+import { analyses, analysisSections } from '@/db/schema';
+import { eq, desc } from 'drizzle-orm';
 import ResultsView from '@/components/ResultsView';
 
 interface ResultsPageProps {
@@ -11,23 +13,18 @@ interface ResultsPageProps {
 export default async function ResultsPage({ params }: ResultsPageProps) {
     const { id } = await params;
 
-    const { data: analysis, error: analysisError } = await supabase
-        .from('analyses')
-        .select('*')
-        .eq('id', id)
-        .single();
+    const analysis = await db.query.analyses.findFirst({
+        where: eq(analyses.id, id),
+    });
 
-    if (analysisError || !analysis) {
+    if (!analysis) {
         notFound();
     }
 
-    const { data: sections } = await supabase
-        .from('analysis_sections')
-        .select('*')
-        .eq('analysis_id', id)
-        .order('priority', { ascending: false });
+    const sections = await db.query.analysisSections.findMany({
+        where: eq(analysisSections.analysisId, id),
+        orderBy: [desc(analysisSections.priority)],
+    });
 
-    const sectionFeedback = sections || [];
-
-    return <ResultsView analysis={analysis} sectionFeedback={sectionFeedback} />;
+    return <ResultsView analysis={analysis} sectionFeedback={sections} />;
 }
