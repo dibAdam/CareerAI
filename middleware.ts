@@ -19,8 +19,38 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    // 2. If logged in, check consent
+    // 2. If logged in, check consent (but not on auth or consent pages)
     if (user && !isAuthPage && !isConsentPage) {
+        try {
+            const { data: profile, error } = await supabase
+                .from('profiles')
+                .select('consent_accepted')
+                .eq('id', user.id)
+                .single()
+
+            // If profile doesn't exist yet (shouldn't happen with trigger, but just in case)
+            if (error && error.code === 'PGRST116') {
+                // Profile not found - create it
+                await supabase.from('profiles').insert({
+                    id: user.id,
+                    email: user.email,
+                    consent_accepted: false
+                })
+                return NextResponse.redirect(new URL('/consent', request.url))
+            }
+
+            // If profile exists but consent not accepted, redirect to consent
+            if (profile && !profile.consent_accepted) {
+                return NextResponse.redirect(new URL('/consent', request.url))
+            }
+        } catch (err) {
+            console.error('Middleware consent check error:', err)
+        }
+    }
+
+    // 3. If logged in and trying to access login page, redirect to analyze
+    if (user && isAuthPage) {
+        // Check if they have consent first
         const { data: profile } = await supabase
             .from('profiles')
             .select('consent_accepted')
@@ -30,10 +60,7 @@ export async function middleware(request: NextRequest) {
         if (profile && !profile.consent_accepted) {
             return NextResponse.redirect(new URL('/consent', request.url))
         }
-    }
 
-    // 3. If logged in and trying to access login page
-    if (user && isAuthPage) {
         return NextResponse.redirect(new URL('/analyze', request.url))
     }
 

@@ -2,11 +2,34 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sparkles, Menu, X, ArrowRight } from 'lucide-react';
+import { Sparkles, Menu, X, ArrowRight, LogOut, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const supabase = createClient();
+    const router = useRouter();
+
+    // Check authentication status
+    useEffect(() => {
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            setLoading(false);
+        };
+        getUser();
+
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [supabase]);
 
     // Close menu on resize if it's open
     useEffect(() => {
@@ -25,6 +48,12 @@ export default function Navbar() {
             document.body.style.overflow = 'unset';
         }
     }, [isOpen]);
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        router.push('/');
+        router.refresh();
+    };
 
     const navLinks = [
         { href: "#problem", label: "The Problem", description: "Why traditional CVs fail today" },
@@ -61,13 +90,55 @@ export default function Navbar() {
                     ))}
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <Link
-                        href="/analyze"
-                        className="hidden sm:block px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
-                    >
-                        Analyze My CV
-                    </Link>
+                <div className="flex items-center gap-3">
+                    {!loading && (
+                        <>
+                            {user ? (
+                                <>
+                                    <Link
+                                        href="/analyze"
+                                        className="hidden sm:block px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
+                                    >
+                                        Analyze My CV
+                                    </Link>
+
+                                    <div className="hidden md:flex items-center gap-3">
+                                        <Link
+                                            href="/settings"
+                                            className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                                        >
+                                            <User className="w-4 h-4" />
+                                            <span className="text-sm font-medium max-w-[100px] truncate">
+                                                {user.email?.split('@')[0]}
+                                            </span>
+                                        </Link>
+                                        <button
+                                            onClick={handleSignOut}
+                                            className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-colors group"
+                                            title="Sign Out"
+                                        >
+                                            <LogOut className="w-4 h-4 group-hover:text-red-400" />
+                                        </button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        className="hidden sm:block px-5 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors"
+                                    >
+                                        Sign In
+                                    </Link>
+                                    <Link
+                                        href="/login"
+                                        className="px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
+                                    >
+                                        Get Started
+                                    </Link>
+                                </>
+                            )}
+                        </>
+                    )}
 
                     {/* Mobile Menu Toggle */}
                     <button
@@ -90,27 +161,6 @@ export default function Navbar() {
                         transition={{ duration: 0.4, ease: "circOut" }}
                         className="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-3xl md:hidden flex flex-col"
                     >
-                        {/* Mobile Header Context */}
-                        {/* <div className="h-20 px-6 flex items-center justify-between border-b border-white/5">
-                            <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.1 }}
-                                className="flex items-center gap-2"
-                            >
-                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                                <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">Engine: Active</span>
-                            </motion.div>
-                            <motion.span
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.15 }}
-                                className="text-[10px] font-bold tracking-[0.2em] text-white/20 uppercase"
-                            >
-                                AI-powered career analysis
-                            </motion.span>
-                        </div> */}
-
                         <div className="flex-1 flex flex-col justify-center px-8">
                             <div className="space-y-1 mb-10">
                                 <motion.span
@@ -164,45 +214,84 @@ export default function Navbar() {
                             <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
 
                             <div className="space-y-4">
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5 }}
-                                    className="relative group"
-                                >
-                                    <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 animate-pulse" />
-                                    <Link
-                                        href="/analyze"
-                                        onClick={() => setIsOpen(false)}
-                                        className="relative w-full py-5 bg-white text-black text-center text-lg font-bold rounded-2xl flex items-center justify-center gap-3 shadow-2xl active:scale-[0.98] transition-transform"
-                                    >
-                                        Begin AI Optimization
-                                        <Sparkles className="w-5 h-5" />
-                                    </Link>
-                                </motion.div>
+                                {user ? (
+                                    <>
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.5 }}
+                                            className="space-y-3"
+                                        >
+                                            <Link
+                                                href="/analyze"
+                                                onClick={() => setIsOpen(false)}
+                                                className="w-full py-4 bg-white text-black text-center text-base font-bold rounded-2xl flex items-center justify-center gap-3 shadow-2xl active:scale-[0.98] transition-transform"
+                                            >
+                                                Analyze My CV
+                                                <Sparkles className="w-5 h-5" />
+                                            </Link>
 
-                                <motion.p
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.6 }}
-                                    className="text-center text-[10px] font-bold tracking-widest text-white/20 uppercase"
-                                >
-                                    No signup required · Private & secure
-                                </motion.p>
+                                            <div className="flex gap-3">
+                                                <Link
+                                                    href="/settings"
+                                                    onClick={() => setIsOpen(false)}
+                                                    className="flex-1 py-3 bg-white/5 border border-white/10 text-white text-center text-sm font-medium rounded-xl flex items-center justify-center gap-2"
+                                                >
+                                                    <User className="w-4 h-4" />
+                                                    Settings
+                                                </Link>
+                                                <button
+                                                    onClick={() => {
+                                                        handleSignOut();
+                                                        setIsOpen(false);
+                                                    }}
+                                                    className="flex-1 py-3 bg-red-500/10 border border-red-500/20 text-red-400 text-center text-sm font-medium rounded-xl flex items-center justify-center gap-2"
+                                                >
+                                                    <LogOut className="w-4 h-4" />
+                                                    Sign Out
+                                                </button>
+                                            </div>
+                                        </motion.div>
+
+                                        <motion.p
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 0.6 }}
+                                            className="text-center text-[10px] font-medium text-white/40"
+                                        >
+                                            Signed in as {user.email}
+                                        </motion.p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.5 }}
+                                            className="relative group"
+                                        >
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 animate-pulse" />
+                                            <Link
+                                                href="/login"
+                                                onClick={() => setIsOpen(false)}
+                                                className="relative w-full py-5 bg-white text-black text-center text-lg font-bold rounded-2xl flex items-center justify-center gap-3 shadow-2xl active:scale-[0.98] transition-transform"
+                                            >
+                                                Get Started
+                                                <Sparkles className="w-5 h-5" />
+                                            </Link>
+                                        </motion.div>
+
+                                        <motion.p
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 0.6 }}
+                                            className="text-center text-[10px] font-bold tracking-widest text-white/20 uppercase"
+                                        >
+                                            Sign in to save your analyses
+                                        </motion.p>
+                                    </>
+                                )}
                             </div>
-
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.7 }}
-                                className="flex flex-col items-center gap-1"
-                            >
-                                <button className="group flex items-center gap-2 text-white/40 hover:text-white text-sm font-medium transition-colors">
-                                    View a sample AI report
-                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </button>
-                                <span className="text-[10px] text-white/20 font-medium">See what you&apos;ll get</span>
-                            </motion.div>
                         </div>
 
                         {/* Background Decoration */}
