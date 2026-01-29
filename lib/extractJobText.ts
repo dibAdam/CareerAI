@@ -4,6 +4,7 @@
  */
 
 import { scrapeLinkedInJob } from './scrapeLinkedIn';
+import { scrapeJob } from './jobScraper';
 
 export interface JobInput {
     source: 'url' | 'text';
@@ -30,16 +31,22 @@ export async function extractJobText(input: JobInput): Promise<ExtractedJob> {
             jobUrl = "https://www.linkedin.com/jobs/view/" + jobID;
         }
         try {
-            const linkedInData = await scrapeLinkedInJob(jobUrl);
+            const jobData = await scrapeJob(jobUrl);
             return {
-                title: linkedInData.title,
-                company: linkedInData.company,
-                description: linkedInData.description,
+                title: jobData.title,
+                company: jobData.company,
+                description: jobData.description,
             };
         } catch (error) {
             // If scraping fails, throw error with helpful message
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+            if (errorMessage === "Provided URL is not a valid job offer") {
+                throw error;
+            }
+
             throw new Error(
-                'Unable to scrape LinkedIn job. This usually happens when LinkedIn blocks automated access. ' +
+                `Unable to scrape the job from this URL. ${errorMessage}. ` +
                 'Please switch to "manual text" mode and paste the job description directly.'
             );
         }

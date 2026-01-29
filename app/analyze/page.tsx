@@ -44,7 +44,7 @@ export default function AnalyzePage() {
         }
 
         if (!jobInput || jobInput.trim().length < 10) {
-            setError('Please provide a LinkedIn URL or complete job description');
+            setError('Please provide a valid job URL or complete job description');
             return;
         }
 
@@ -166,6 +166,7 @@ export default function AnalyzePage() {
                                             setJobSource(source);
                                             setError('');
                                         }}
+                                        forcedSource={jobSource}
                                         disabled={isAnalyzing}
                                     />
 
@@ -240,10 +241,26 @@ export default function AnalyzePage() {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 10 }}
-                                    className="mt-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3"
+                                    className="mt-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-col gap-4"
                                 >
-                                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm text-red-200 font-medium">{error}</p>
+                                    <div className="flex items-start gap-3">
+                                        <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                                        <p className="text-sm text-red-200 font-medium whitespace-pre-line">{error}</p>
+                                    </div>
+
+                                    {error.includes('manual text') && (
+                                        <div className="flex justify-end">
+                                            <button
+                                                onClick={() => {
+                                                    setJobSource('text');
+                                                    setError('');
+                                                }}
+                                                className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-200 text-xs font-bold uppercase tracking-widest rounded-lg transition-colors border border-red-500/30"
+                                            >
+                                                Switch to Manual Mode
+                                            </button>
+                                        </div>
+                                    )}
                                 </motion.div>
                             )}
                         </AnimatePresence>

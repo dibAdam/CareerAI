@@ -9,6 +9,7 @@ import Features from '@/components/landing/Features';
 import OutputPreview from '@/components/landing/OutputPreview';
 import WhoItsFor from '@/components/landing/WhoItsFor';
 import Trust from '@/components/landing/Trust';
+import SupportedPlatforms from '@/components/landing/SupportedPlatforms';
 import FinalCTA from '@/components/landing/FinalCTA';
 import Footer from '@/components/landing/Footer';
 
@@ -21,6 +22,7 @@ export default function LandingPage() {
                 <Problem />
                 <Solution />
                 <HowItWorks />
+                <SupportedPlatforms />
                 <Features />
                 <OutputPreview />
                 <WhoItsFor />

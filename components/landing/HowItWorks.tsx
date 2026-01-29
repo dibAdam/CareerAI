@@ -15,7 +15,7 @@ export default function HowItWorks() {
                     <div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
                     {[
-                        { step: "01", title: "Paste the Job", desc: "Drop any LinkedIn job URL. Our AI extracts the hidden requirements.", icon: Globe },
+                        { step: "01", title: "Paste the Job", desc: "Drop any job URL (LinkedIn, Indeed, etc.). Our AI extracts the hidden requirements.", icon: Globe },
                         { step: "02", title: "Upload your CV", desc: "Text or PDF. We analyze your experience against the specific role.", icon: FileText },
                         { step: "03", title: "Get the Report", desc: "Receive a detailed verdict, match score, and an optimization plan.", icon: BarChart3 }
                     ].map((item, i) => (
