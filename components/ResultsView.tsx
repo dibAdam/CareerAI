@@ -19,6 +19,9 @@ import MatchScore from '@/components/MatchScore';
 import SectionFeedback from '@/components/SectionFeedback';
 import ReportCard from '@/components/ReportCard';
 import { cn } from '@/lib/utils';
+import { exportToPDF } from '@/lib/exportPdf';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 interface ResultsViewProps {
     analysis: any;
@@ -26,6 +29,8 @@ interface ResultsViewProps {
 }
 
 export default function ResultsView({ analysis, sectionFeedback }: ResultsViewProps) {
+    const [isExporting, setIsExporting] = useState(false);
+
     // Defensive mapping to handle both camelCase (Drizzle) and snake_case (Raw DB/AI)
     const matchScore = analysis.matchScore ?? analysis.match_score ?? 0;
     const potentialScore = analysis.potentialScore ?? analysis.potential_score ?? 0;
@@ -36,6 +41,29 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
     const jobTitle = analysis.jobTitle ?? analysis.job_title ?? 'Job Position';
     const company = analysis.company ?? 'Company';
     const createdAt = analysis.createdAt ?? analysis.created_at;
+
+    const handleExport = async () => {
+        try {
+            setIsExporting(true);
+            await exportToPDF({
+                jobTitle,
+                company,
+                matchScore,
+                potentialScore,
+                summary,
+                missingKeywords,
+                priorityActions,
+                atsTips,
+                createdAt: createdAt?.toString()
+            }, sectionFeedback);
+        } catch (error) {
+            console.error('Export failed:', error);
+            // Fallback to print
+            window.print();
+        } finally {
+            setIsExporting(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-[#0A0A0B] text-white selection:bg-emerald-500/30 font-sans">
@@ -51,11 +79,16 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
 
                     <div className="flex items-center gap-2 md:gap-4">
                         <button
-                            onClick={() => window.print()}
-                            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tracking-widest uppercase text-white/40 hover:text-white transition-all"
+                            onClick={handleExport}
+                            disabled={isExporting}
+                            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold tracking-widest uppercase text-white/40 hover:text-white transition-all disabled:opacity-50"
                         >
-                            <Download className="w-4 h-4" />
-                            Export PDF
+                            {isExporting ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                                <Download className="w-4 h-4" />
+                            )}
+                            {isExporting ? 'Generating...' : 'Export PDF'}
                         </button>
                         <Link
                             href="/analyze"
@@ -111,10 +144,15 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
                                     <Share2 className="w-5 h-5" />
                                 </button>
                                 <button
-                                    onClick={() => window.print()}
-                                    className="p-2.5 md:p-3 rounded-xl bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors md:hidden"
+                                    onClick={handleExport}
+                                    disabled={isExporting}
+                                    className="p-2.5 md:p-3 rounded-xl bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors md:hidden disabled:opacity-50"
                                 >
-                                    <Download className="w-5 h-5" />
+                                    {isExporting ? (
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        <Download className="w-5 h-5" />
+                                    )}
                                 </button>
                             </motion.div>
                         </div>
