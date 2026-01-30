@@ -8,6 +8,7 @@ import {
     Search,
     ExternalLink
 } from 'lucide-react';
+import Image from 'next/image';
 
 const platforms = [
     {
@@ -38,7 +39,7 @@ const platforms = [
 
 export default function SupportedPlatforms() {
     return (
-        <section className="py-24 relative overflow-hidden">
+        <section id="platforms" className="py-24 relative overflow-hidden">
             {/* Background Accents */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[120px] -z-10" />
 
@@ -133,11 +134,25 @@ export default function SupportedPlatforms() {
 
                     <div className="flex items-center gap-4">
                         <div className="flex -space-x-3">
-                            {[1, 2, 3, 4].map((i) => (
-                                <div key={i} className="w-10 h-10 rounded-full border-2 border-[#0A0A0B] bg-white/5 flex items-center justify-center text-[10px] font-bold">
-                                    {i === 4 ? '+' : ''}
+                            {[
+                                "https://cdn.dribbble.com/userupload/42304023/file/original-e4f6434b02d6754d488e1ed6b6bf519d.jpg?resize=400x300",
+                                "https://cdn.dribbble.com/userupload/40636733/file/original-74462bed8a23d31864cbdfb410d910bb.png?resize=400x300",
+                                "https://cdn.dribbble.com/userupload/12876811/file/original-f174c9a7dec671f5bc7e8baaeef8cdf9.png?resize=400x300"
+                            ].map((url, i) => (
+                                <div key={i} className="w-10 h-10 rounded-full border-2 border-[#0A0A0B] bg-white flex items-center justify-center overflow-hidden">
+                                    <Image
+                                        src={url}
+                                        alt={`Logo ${i + 1}`}
+                                        width={40}
+                                        height={40}
+                                        className="w-full h-full object-cover"
+                                        unoptimized
+                                    />
                                 </div>
                             ))}
+                            <div className="w-10 h-10 rounded-full border-2 border-[#0A0A0B] bg-white/5 flex items-center justify-center text-[10px] font-bold">
+                                +
+                            </div>
                         </div>
                         <span className="text-xs font-bold text-white/20 uppercase tracking-widest">Global Coverage</span>
                     </div>

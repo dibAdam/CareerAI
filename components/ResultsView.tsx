@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
-    Sparkles,
     ArrowLeft,
     Download,
     Share2,
@@ -15,6 +14,7 @@ import {
     FileText,
     ShieldCheck
 } from 'lucide-react';
+import Image from 'next/image';
 import MatchScore from '@/components/MatchScore';
 import SectionFeedback from '@/components/SectionFeedback';
 import ReportCard from '@/components/ReportCard';
@@ -71,8 +71,14 @@ export default function ResultsView({ analysis, sectionFeedback }: ResultsViewPr
             <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0A0A0B] backdrop-blur-xl">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 md:gap-3 group">
-                        <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-lg md:rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-emerald-500/20">
-                            <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                        <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
+                            <Image
+                                src="/logo2.png"
+                                alt="Nextrova Logo"
+                                width={40}
+                                height={40}
+                                className="object-contain"
+                            />
                         </div>
                         <span className="text-lg md:text-xl font-bold tracking-tight font-heading">Nextrova</span>
                     </Link>

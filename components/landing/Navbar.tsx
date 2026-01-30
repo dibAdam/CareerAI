@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sparkles, Menu, X, ArrowRight, LogOut, User } from 'lucide-react';
+import { Menu, X, ArrowRight, LogOut, User } from 'lucide-react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -59,99 +60,108 @@ export default function Navbar() {
         { href: "#problem", label: "The Problem", description: "Why traditional CVs fail today" },
         { href: "#solution", label: "Solution", description: "AI-powered optimization engine" },
         { href: "#how-it-works", label: "Process", description: "How we transform your career" },
+        { href: "#platforms", label: "Platforms", description: "Job boards we support" },
         { href: "#features", label: "Features", description: "Advanced tools for your success" },
     ];
 
     return (
-        <nav className="fixed top-0 w-full z-[100] border-b border-white/5 bg-black/30 backdrop-blur-lg">
-            <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                <motion.div
-                    animate={{ opacity: 1 }}
-                    className="z-[1100]"
-                >
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-emerald-500/20">
-                            <Sparkles className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="text-xl font-bold tracking-tight font-heading">Nextrova</span>
-                    </Link>
-                </motion.div>
-
-                {/* Desktop Links */}
-                <div className="hidden md:flex items-center gap-8">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className="text-sm font-medium text-white/60 hover:text-white transition-colors"
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                </div>
-
-                <div className="flex items-center gap-3">
-                    {!loading && (
-                        <>
-                            {user ? (
-                                <>
-                                    <Link
-                                        href="/analyze"
-                                        className="hidden sm:block px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
-                                    >
-                                        Analyze My CV
-                                    </Link>
-
-                                    <div className="hidden md:flex items-center gap-3">
-                                        <Link
-                                            href="/settings"
-                                            className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-                                        >
-                                            <User className="w-4 h-4" />
-                                            <span className="text-sm font-medium max-w-[100px] truncate">
-                                                {user.email?.split('@')[0]}
-                                            </span>
-                                        </Link>
-                                        <button
-                                            onClick={handleSignOut}
-                                            className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-colors group"
-                                            title="Sign Out"
-                                        >
-                                            <LogOut className="w-4 h-4 group-hover:text-red-400" />
-                                        </button>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <Link
-                                        href="/login"
-                                        className="hidden sm:block px-5 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors"
-                                    >
-                                        Sign In
-                                    </Link>
-                                    <Link
-                                        href="/login"
-                                        className="px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
-                                    >
-                                        Get Started
-                                    </Link>
-                                </>
-                            )}
-                        </>
-                    )}
-
-                    {/* Mobile Menu Toggle */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="p-2 text-white/60 hover:text-white md:hidden z-[1100]"
-                        aria-label="Toggle Menu"
+        <>
+            <nav className="fixed top-0 w-full z-[100] border-b border-white/5 bg-black/60 backdrop-blur-xl">
+                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                    <motion.div
+                        animate={{ opacity: 1 }}
+                        className="z-[1100]"
                     >
-                        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
-                </div>
-            </div>
+                        <Link href="/" className="flex items-center gap-3 group">
+                            <div className="w-10 h-10 flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
+                                <Image
+                                    src="/logo2.png"
+                                    alt="Nextrova Logo"
+                                    width={40}
+                                    height={40}
+                                    className="object-contain"
+                                />
+                            </div>
+                            <span className="text-xl font-bold tracking-tight font-heading pt-2 md:block hidden">Nextrova</span>
+                        </Link>
+                    </motion.div>
 
-            {/* Mobile Menu Overlay */}
+                    {/* Desktop Links */}
+                    <div className="hidden md:flex items-center gap-8">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className="text-sm font-medium text-white/60 hover:text-white transition-colors"
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        {!loading && (
+                            <>
+                                {user ? (
+                                    <>
+                                        <Link
+                                            href="/analyze"
+                                            className="hidden sm:block px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
+                                        >
+                                            Analyze My CV
+                                        </Link>
+
+                                        <div className="hidden md:flex items-center gap-3">
+                                            <Link
+                                                href="/settings"
+                                                className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                                            >
+                                                <User className="w-4 h-4" />
+                                                <span className="text-sm font-medium max-w-[100px] truncate">
+                                                    {user.email?.split('@')[0]}
+                                                </span>
+                                            </Link>
+                                            <button
+                                                onClick={handleSignOut}
+                                                className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-red-500/10 hover:border-red-500/20 transition-colors group"
+                                                title="Sign Out"
+                                            >
+                                                <LogOut className="w-4 h-4 group-hover:text-red-400" />
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            href="/login"
+                                            className="hidden sm:block px-5 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors"
+                                        >
+                                            Sign In
+                                        </Link>
+                                        <Link
+                                            href="/login"
+                                            className="px-6 py-2.5 bg-white text-black text-sm font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
+                                        >
+                                            Get Started
+                                        </Link>
+                                    </>
+                                )}
+                            </>
+                        )}
+
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="p-2 text-white/60 hover:text-white md:hidden z-[1100]"
+                            aria-label="Toggle Menu"
+                        >
+                            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            {/* Mobile Menu Overlay - Outside nav to fix backdrop-filter containment */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -159,8 +169,32 @@ export default function Navbar() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.4, ease: "circOut" }}
-                        className="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-3xl md:hidden flex flex-col"
+                        className="fixed inset-0 z-[1000] bg-[#0A0A0B] md:hidden flex flex-col"
                     >
+                        {/* Mobile Header inside menu */}
+                        <div className="h-20 flex items-center justify-between px-6 border-b border-white/5">
+                            <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-3">
+                                <div className="w-10 h-10 flex items-center justify-center">
+                                    <Image
+                                        src="/logo2.png"
+                                        alt="Nextrova Logo"
+                                        width={40}
+                                        height={40}
+                                        className="object-contain"
+                                    />
+                                </div>
+                            </Link>
+
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="p-2 text-white/60 hover:text-white"
+                                    aria-label="Close Menu"
+                                >
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+                        </div>
                         <div className="flex-1 flex flex-col justify-center px-8">
                             <div className="space-y-1 mb-10">
                                 <motion.span
@@ -228,7 +262,6 @@ export default function Navbar() {
                                                 className="w-full py-4 bg-white text-black text-center text-base font-bold rounded-2xl flex items-center justify-center gap-3 shadow-2xl active:scale-[0.98] transition-transform"
                                             >
                                                 Analyze My CV
-                                                <Sparkles className="w-5 h-5" />
                                             </Link>
 
                                             <div className="flex gap-3">
@@ -277,7 +310,6 @@ export default function Navbar() {
                                                 className="relative w-full py-5 bg-white text-black text-center text-lg font-bold rounded-2xl flex items-center justify-center gap-3 shadow-2xl active:scale-[0.98] transition-transform"
                                             >
                                                 Get Started
-                                                <Sparkles className="w-5 h-5" />
                                             </Link>
                                         </motion.div>
 
@@ -299,6 +331,6 @@ export default function Navbar() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </>
     );
 }
