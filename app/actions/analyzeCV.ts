@@ -6,6 +6,8 @@ import { extractJobText } from '@/lib/extractJobText';
 import { createClient } from '@/lib/supabase/server';
 import { db } from '@/lib/db';
 import { analyses, analysisSections } from '@/db/schema';
+import { checkAnonymousUsage } from '@/lib/actions/check-anonymous-usage';
+import { recordAnonymousUsage } from '@/lib/actions/record-anonymous-usage';
 
 export interface AnalyzeCVInput {
     cvFile?: File;
@@ -23,14 +25,20 @@ export interface AnalyzeCVResult {
 /**
  * Server action to analyze CV against job description
  * This is the main entry point for the analysis flow
+ * Supports both authenticated and anonymous users (1 free analysis)
  */
 export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVResult> {
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
 
-        if (!user) {
-            return { success: false, error: 'You must be logged in to perform an analysis' };
+        // Check anonymous usage limits (bypassed for authenticated users)
+        const usageCheck = await checkAnonymousUsage();
+        if (!usageCheck.allowed) {
+            return {
+                success: false,
+                error: usageCheck.reason || 'Usage limit reached. Please sign in to continue.'
+            };
         }
 
         // Step 1: Extract CV text
@@ -62,9 +70,9 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
             jobData.company
         );
 
-        // Step 4: Save to database using Drizzle
+        // Step 4: Save to database using Drizzle (userId can be null for anonymous)
         const [analysisRecord] = await db.insert(analyses).values({
-            userId: user.id,
+            userId: user?.id || null,
             jobTitle: jobData.title,
             company: jobData.company,
             jobDescription: jobData.description,
@@ -91,6 +99,11 @@ export async function analyzeCVAction(input: AnalyzeCVInput): Promise<AnalyzeCVR
 
         if (sectionsToInsert.length > 0) {
             await db.insert(analysisSections).values(sectionsToInsert);
+        }
+
+        // Step 6: Record anonymous usage (if user is not logged in)
+        if (!user) {
+            await recordAnonymousUsage();
         }
 
         return {

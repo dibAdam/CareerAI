@@ -1,5 +1,7 @@
 import { pgTable, text, timestamp, uuid, integer, boolean } from 'drizzle-orm/pg-core';
 
+export * from './anonymous-usage';
+
 export const profiles = pgTable('profiles', {
     id: uuid('id').primaryKey().notNull(),
     fullName: text('full_name'),

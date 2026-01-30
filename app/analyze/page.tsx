@@ -17,7 +17,9 @@ import {
 } from 'lucide-react';
 import UploadCV from '@/components/UploadCV';
 import JobInput from '@/components/JobInput';
+import LoginGate from '@/components/LoginGate';
 import { analyzeCVAction } from '@/app/actions/analyzeCV';
+import { checkAnonymousUsage } from '@/lib/actions/check-anonymous-usage';
 import { cn } from '@/lib/utils';
 
 export default function AnalyzePage() {
@@ -30,10 +32,29 @@ export default function AnalyzePage() {
     const [error, setError] = useState<string>('');
     const [step, setStep] = useState(1);
     const [mounted, setMounted] = useState(false);
+    const [showLoginGate, setShowLoginGate] = useState(false);
+    const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
+    const [checkingUsage, setCheckingUsage] = useState(true);
 
     useEffect(() => {
         setMounted(true);
+        checkUsage();
     }, []);
+
+    const checkUsage = async () => {
+        try {
+            const result = await checkAnonymousUsage();
+            setRemainingAttempts(result.remainingAttempts);
+
+            if (!result.allowed) {
+                setShowLoginGate(true);
+            }
+        } catch (err) {
+            console.error('Failed to check usage:', err);
+        } finally {
+            setCheckingUsage(false);
+        }
+    };
 
     const handleAnalyze = async () => {
         setError('');
@@ -73,7 +94,12 @@ export default function AnalyzePage() {
 
     const canAnalyze = (cvFile || cvText) && jobInput.trim().length >= 10;
 
-    if (!mounted) return null;
+    if (!mounted || checkingUsage) return null;
+
+    // Show login gate if usage limit reached
+    if (showLoginGate) {
+        return <LoginGate />;
+    }
 
     return (
         <div className="min-h-screen bg-[#0A0A0B] text-white selection:bg-emerald-500/30 font-sans">
@@ -116,6 +142,21 @@ export default function AnalyzePage() {
                         >
                             Configure your analysis parameters for maximum precision.
                         </motion.p>
+
+                        {/* Anonymous usage indicator */}
+                        {remainingAttempts !== null && remainingAttempts !== Infinity && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20"
+                            >
+                                <Sparkles className="w-4 h-4 text-emerald-400" />
+                                <span className="text-sm font-bold text-emerald-400">
+                                    {remainingAttempts} Free Analysis Remaining
+                                </span>
+                            </motion.div>
+                        )}
                     </div>
 
                     {/* Step Indicator */}

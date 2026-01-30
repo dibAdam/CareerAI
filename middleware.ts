@@ -13,9 +13,11 @@ export async function middleware(request: NextRequest) {
         request.nextUrl.pathname.startsWith('/auth')
     const isConsentPage = request.nextUrl.pathname.startsWith('/consent')
     const isPublicPage = request.nextUrl.pathname === '/'
+    const isAnalyzePage = request.nextUrl.pathname.startsWith('/analyze')
+    const isResultsPage = request.nextUrl.pathname.startsWith('/results')
 
-    // 1. If not logged in and trying to access protected route
-    if (!user && !isAuthPage && !isPublicPage) {
+    // 1. If not logged in and trying to access protected route (but allow /analyze and /results for anonymous users)
+    if (!user && !isAuthPage && !isPublicPage && !isAnalyzePage && !isResultsPage) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
